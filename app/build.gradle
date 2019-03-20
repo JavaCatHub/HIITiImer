@@ -26,6 +26,7 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
 
+    implementation "com.google.android.gms:play-services-ads:$rootProject.adsVersion"
     implementation "com.google.android.gms:play-services-fitness:$rootProject.playServicesVersion"
     implementation "com.google.android.gms:play-services-auth:$rootProject.playServicesVersion"
 
