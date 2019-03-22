@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HIITTimer</string>
+    <string name="toolbar_login">Login</string>
+    <string name="workout">Workout</string>
+    <string name="assets">Assets</string>
+    <string name="login">Login</string>
 </resources>
