@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TimerActivity"></activity>
+        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".TimerActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

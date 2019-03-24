@@ -1,5 +1,6 @@
 package com.example.android.hiittimer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.login:
-                Toast.makeText(this,"login",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,DetailActivity.class);
+                startActivity(intent);
                 break;
         }
         return false;
