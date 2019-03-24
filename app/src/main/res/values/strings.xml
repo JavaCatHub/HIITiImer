@@ -12,4 +12,6 @@
     <string name="cycle">Cycle</string>
     <string name="set">Set</string>
     <string name="total_time">Total time</string>
+    <string name="play">Play</string>
+    <string name="select_sound">select sound</string>
 </resources>
