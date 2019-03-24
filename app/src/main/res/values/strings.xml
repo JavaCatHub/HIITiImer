@@ -4,4 +4,12 @@
     <string name="workout">Workout</string>
     <string name="assets">Assets</string>
     <string name="login">Login</string>
+    <string name="current">Current</string>
+    <string name="prepare">Prepare</string>
+    <string name="work_out">Work out</string>
+    <string name="interval">Interval</string>
+    <string name="cool_down">Cool down</string>
+    <string name="cycle">Cycle</string>
+    <string name="set">Set</string>
+    <string name="total_time">Total time</string>
 </resources>
