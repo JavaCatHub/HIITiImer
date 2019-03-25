@@ -1,7 +1,13 @@
 package com.example.android.hiittimer;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Asset {
 
+    @PrimaryKey
+    private int id;
     private String title;
     private long prepare;
     private long workOut;
@@ -10,6 +16,14 @@ public class Asset {
     private int cycle;
     private int set;
     private long totalTime;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

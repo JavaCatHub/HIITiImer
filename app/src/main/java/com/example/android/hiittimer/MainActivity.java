@@ -13,6 +13,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private MainActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout = findViewById(R.id.tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
     }
 
     @Override
