@@ -1,4 +1,4 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Asset {
 
     @PrimaryKey
-    private int id;
+    private int _id;
     private String title;
     private long prepare;
     private long workOut;
@@ -16,13 +16,14 @@ public class Asset {
     private int cycle;
     private int set;
     private long totalTime;
+    private String comment;
 
     public int getId() {
-        return id;
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int _id) {
+        this._id = _id;
     }
 
     public String getTitle() {
@@ -89,7 +90,16 @@ public class Asset {
         this.totalTime = totalTime;
     }
 
-    public void calculateTotalTime() {
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public long calculateTotalTime() {
         this.totalTime = (this.workOut + this.interval) * this.cycle * this.set + this.coolDown * (this.set - 1) + this.prepare;
+        return totalTime;
     }
 }
