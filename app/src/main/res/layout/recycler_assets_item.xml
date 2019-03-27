@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="asset"
-            type="com.example.android.hiittimer.model.Asset"/>
+            type="com.example.android.hiittimer.model.Asset" />
+
+        <variable
+            name="listener"
+            type="com.example.android.hiittimer.ItemClickListener" />
 
     </data>
 
@@ -26,6 +29,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{asset.title}"
+            android:onClick="@{() -> listener.onClick(asset)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

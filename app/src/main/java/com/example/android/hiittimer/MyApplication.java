@@ -1,10 +1,7 @@
 package com.example.android.hiittimer;
 
 import android.app.Application;
-import android.os.Build;
-
 import com.facebook.stetho.Stetho;
-
 import timber.log.Timber;
 
 public class MyApplication extends Application {

@@ -1,7 +1,6 @@
 package com.example.android.hiittimer;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.hiittimer.databinding.RecyclerAssetsItemBinding;
@@ -12,11 +11,16 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 
 public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsAdapterViewHolder> {
 
     private List<Asset> assetList;
+    private MainActivityViewModel viewModel;
 
+    public AssetsAdapter(MainActivityViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
 
     @NonNull
     @Override
@@ -24,7 +28,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsAdap
         int layoutForListItem = R.layout.recycler_assets_item;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
-        RecyclerAssetsItemBinding binding = DataBindingUtil.inflate(layoutInflater,layoutForListItem,parent,false);
+        RecyclerAssetsItemBinding binding = DataBindingUtil.inflate(layoutInflater, layoutForListItem, parent, false);
 
         return new AssetsAdapterViewHolder(binding);
     }
@@ -32,6 +36,11 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsAdap
     @Override
     public void onBindViewHolder(@NonNull AssetsAdapterViewHolder holder, int position) {
         holder.binding.setAsset(assetList.get(position));
+        ItemClickListener listener = asset -> {
+            viewModel.getOpenDetailEditEvent().setValue(asset);
+            Timber.d("touched");
+        };
+        holder.binding.setListener(listener);
         holder.binding.executePendingBindings();
     }
 
@@ -46,7 +55,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsAdap
     }
 
     class AssetsAdapterViewHolder extends RecyclerView.ViewHolder {
-            private final RecyclerAssetsItemBinding binding;
+        private final RecyclerAssetsItemBinding binding;
 
         AssetsAdapterViewHolder(@NonNull RecyclerAssetsItemBinding binding) {
             super(binding.getRoot());

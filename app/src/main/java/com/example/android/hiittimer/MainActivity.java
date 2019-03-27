@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.hiittimer.model.Asset;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -15,8 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String ASSET_KEY = "asset";
+
     private AdView mAdView;
     private Toolbar mToolbar;
     private ViewPager mViewPager;
@@ -46,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
 
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-
+        mViewModel.getOpenDetailEditEvent().observed(this, this::startEditActivity);
     }
 
     @Override
@@ -59,10 +65,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.login:
-                Intent intent = new Intent(this,DetailActivity.class);
-                startActivity(intent);
-                break;
+                Toast.makeText(this, "login", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
+
+    public void startEditActivity(Object obj) {
+        Intent intent = new Intent(this,DetailActivity.class);
+        if (obj instanceof Asset) {
+            Asset asset = (Asset) obj;
+            intent.putExtra(ASSET_KEY, asset);
+        }else if(obj instanceof View){
+            Asset asset = new Asset();
+            intent.putExtra(ASSET_KEY,asset);
+        }else {
+            Timber.e("There happened to a problem");
+            return;
+        }
+        startActivity(intent);
+    }
+
 }
