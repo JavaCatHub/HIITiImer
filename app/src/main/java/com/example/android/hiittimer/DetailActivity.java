@@ -1,28 +1,27 @@
 package com.example.android.hiittimer;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 
+import com.example.android.hiittimer.databinding.ActivityDetailBinding;
+import com.example.android.hiittimer.model.Asset;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private AdView mAdView;
-    private Toolbar mToolbar;
+    private ActivityDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-
-        mToolbar = findViewById(R.id.detail_toolbar);
-        setSupportActionBar(mToolbar);
-
-        mAdView = findViewById(R.id.adView);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_detail);
+        setSupportActionBar(binding.detailToolbar);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        binding.adView.loadAd(adRequest);
+
+        Asset asset = getIntent().getParcelableExtra(MainActivity.ASSET_KEY);
+        binding.setAsset(asset);
     }
 }

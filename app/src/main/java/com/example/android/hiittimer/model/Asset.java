@@ -108,10 +108,10 @@ public class Asset implements Parcelable {
 
     public void setDefaultMyself(){
         setTitle("Default");
-        setPrepare(1000);
-        setWorkOut(2000);
-        setInterval(1000);
-        setCoolDown(6000);
+        setPrepare(10000);
+        setWorkOut(20000);
+        setInterval(10000);
+        setCoolDown(60000);
         setCycle(8);
         setSet(2);
         setTotalTime(calculateTotalTime());

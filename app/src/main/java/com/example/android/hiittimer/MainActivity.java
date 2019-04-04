@@ -21,7 +21,7 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String ASSET_KEY = "asset";
+    public static final String ASSET_KEY = "asset";
 
     private AdView mAdView;
     private Toolbar mToolbar;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModel.getOpenDetailEditEvent().observed(this, this::startEditActivity);
+        mViewModel.getOpenTimerActivity().observed(this,this::startTimerActivity);
     }
 
     @Override
@@ -82,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
             Timber.e("There happened to a problem");
             return;
         }
+        startActivity(intent);
+    }
+
+    public void startTimerActivity(View view){
+        Intent intent = new Intent(this,TimerActivity.class);
+        Asset asset = new Asset();
+        asset.setDefaultMyself();
+        intent.putExtra(ASSET_KEY,asset);
         startActivity(intent);
     }
 
