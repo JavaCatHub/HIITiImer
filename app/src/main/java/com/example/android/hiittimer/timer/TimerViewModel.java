@@ -1,4 +1,6 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.timer;
+
+import com.example.android.hiittimer.model.CountDown;
 
 import java.util.Iterator;
 import java.util.List;

@@ -1,12 +1,11 @@
-package com.example.android.hiittimer;
-
-import android.util.Pair;
+package com.example.android.hiittimer.timer;
 
 import com.example.android.hiittimer.model.Asset;
+import com.example.android.hiittimer.model.CountDown;
+import com.example.android.hiittimer.timer.TimerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -19,7 +18,7 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
     private final long interval = 1000;
 
-    public TimerViewModelFactory(Asset asset){
+    public TimerViewModelFactory(Asset asset) {
         prepareCountDownSet(asset);
     }
 
@@ -31,14 +30,16 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
 
     private void prepareCountDownSet(Asset asset) {
+        timerList.add(
+                new CountDown(asset.getPrepare(), interval, "Prepare", asset.getSet(), asset.getCycle())
+        );
 
-        timerList.add(new CountDown(asset.getPrepare(), interval));
-        for (int i = 0; i < asset.getSet(); i++) {
-            for (int j = 0; j < asset.getCycle(); j++) {
-                timerList.add(new CountDown(asset.getWorkOut(), interval));
-                timerList.add(new CountDown(asset.getInterval(), interval));
+        for (int i = asset.getSet(); i > 0; i--) {
+            for (int j = asset.getCycle(); j > 0; j--) {
+                timerList.add(new CountDown(asset.getWorkOut(), interval, "Workout", i, j));
+                timerList.add(new CountDown(asset.getInterval(), interval, "Interval", i, j));
             }
-            timerList.add(new CountDown(asset.getCoolDown(),interval));
+            timerList.add(new CountDown(asset.getCoolDown(), interval, "Cool down", i, asset.getCycle()));
         }
         timerList.remove(timerList.size() - 1);
         Timber.d(timerList.toString());
