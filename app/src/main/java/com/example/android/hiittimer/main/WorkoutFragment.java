@@ -1,4 +1,4 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.main;
 
 import android.os.Bundle;
 
@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.FragmentWorkoutBinding;
+import com.example.android.hiittimer.main.MainActivityViewModel;
 
 public class WorkoutFragment extends Fragment {
 
@@ -29,7 +31,7 @@ public class WorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       binding = DataBindingUtil.inflate(inflater,R.layout.fragment_workout,container,false);
+       binding = DataBindingUtil.inflate(inflater, R.layout.fragment_workout,container,false);
        binding.setViewModel(mViewModel);
        return binding.getRoot();
     }

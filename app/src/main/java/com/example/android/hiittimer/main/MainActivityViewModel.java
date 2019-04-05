@@ -1,8 +1,9 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.main;
 
 import android.app.Application;
 import android.view.View;
 
+import com.example.android.hiittimer.NavigateLiveData;
 import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.repository.Repository;
 

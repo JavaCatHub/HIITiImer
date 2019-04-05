@@ -1,4 +1,4 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.hiittimer.BuildConfig;
+import com.example.android.hiittimer.DetailActivity;
+import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
+import com.example.android.hiittimer.timer.TimerActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startEditActivity(Object obj) {
-        Intent intent = new Intent(this,DetailActivity.class);
+        Intent intent = new Intent(this, DetailActivity.class);
         if (obj instanceof Asset) {
             Asset asset = (Asset) obj;
             intent.putExtra(ASSET_KEY, asset);
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startTimerActivity(View view){
-        Intent intent = new Intent(this,TimerActivity.class);
+        Intent intent = new Intent(this, TimerActivity.class);
         Asset asset = new Asset();
         asset.setDefaultMyself();
         intent.putExtra(ASSET_KEY,asset);

@@ -1,4 +1,4 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.main;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

@@ -10,13 +10,13 @@
 
         <variable
             name="view_model"
-            type="com.example.android.hiittimer.MainActivityViewModel" />
+            type="com.example.android.hiittimer.main.MainActivityViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".AssetsFragment">
+        tools:context=".main.AssetsFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"

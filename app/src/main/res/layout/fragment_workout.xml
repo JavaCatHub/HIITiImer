@@ -5,7 +5,7 @@
     <data>
         <variable
             name="view_model"
-            type="com.example.android.hiittimer.MainActivityViewModel"/>
+            type="com.example.android.hiittimer.main.MainActivityViewModel"/>
 
     </data>
 
@@ -14,7 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".WorkoutFragment">
+        tools:context=".main.WorkoutFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/play_workout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:elevation="8dp"

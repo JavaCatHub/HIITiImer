@@ -1,8 +1,10 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.main;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.example.android.hiittimer.ItemClickListener;
+import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.RecyclerAssetsItemBinding;
 import com.example.android.hiittimer.model.Asset;
 

@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import com.example.android.hiittimer.databinding.ActivityDetailBinding;
+import com.example.android.hiittimer.main.MainActivity;
 import com.example.android.hiittimer.model.Asset;
 import com.google.android.gms.ads.AdRequest;
 
