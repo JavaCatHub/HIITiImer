@@ -26,6 +26,8 @@ public class LocalDataSource {
         return mAssetDAO.getAssets();
     }
 
+    public LiveData<Asset> getAsset(int id){return mAssetDAO.getAsset(id);}
+
     private void completable(Action action) {
         Completable.fromAction(action)
                 .observeOn(AndroidSchedulers.mainThread())

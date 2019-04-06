@@ -18,6 +18,9 @@ public interface AssetDAO {
     @Query("SELECT * FROM asset ORDER BY _id")
     LiveData<List<Asset>> getAssets();
 
+    @Query("SELECT * FROM asset WHERE _id = :id")
+    LiveData<Asset> getAsset(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveAsset(Asset asset);
 

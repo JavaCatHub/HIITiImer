@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.hiittimer.BuildConfig;
-import com.example.android.hiittimer.DetailActivity;
+import com.example.android.hiittimer.detail.DetailActivity;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.timer.TimerActivity;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DetailActivity.class);
         if (obj instanceof Asset) {
             Asset asset = (Asset) obj;
-            intent.putExtra(ASSET_KEY, asset);
+            intent.putExtra(ASSET_KEY, asset.getId());
         }else if(obj instanceof View){
             Asset asset = new Asset();
             intent.putExtra(ASSET_KEY,asset);
