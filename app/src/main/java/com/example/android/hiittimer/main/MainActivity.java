@@ -12,6 +12,7 @@ import com.example.android.hiittimer.detail.DetailActivity;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.timer.TimerActivity;
+import com.example.android.hiittimer.ui.edit.EditActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -76,13 +77,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startEditActivity(Object obj) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent;
         if (obj instanceof Asset) {
+            intent = new Intent(this, DetailActivity.class);
             Asset asset = (Asset) obj;
             intent.putExtra(ASSET_KEY, asset.getId());
         }else if(obj instanceof View){
+            intent = new Intent(this, EditActivity.class);
             Asset asset = new Asset();
-            intent.putExtra(ASSET_KEY,asset);
+            asset.setDefaultMyself();
+            intent.putExtra(ASSET_KEY,asset.getId());
         }else {
             Timber.e("There happened to a problem");
             return;
@@ -97,5 +101,4 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(ASSET_KEY,asset);
         startActivity(intent);
     }
-
 }

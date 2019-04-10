@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="included"
             type="com.example.android.hiittimer.model.Asset"/>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +21,7 @@
             app:layout_constraintGuide_begin="16dp" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/prepare"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,14 +31,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/workout"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/work_out"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/prepare" />
 
         <TextView
             android:id="@+id/textView19"
@@ -50,10 +48,10 @@
             android:layout_marginTop="8dp"
             android:text="@string/interval"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/workout" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/cool_down"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,34 +61,34 @@
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/cycle"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/cycle"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+            app:layout_constraintTop_toBottomOf="@+id/cool_down" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/set"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/set"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+            app:layout_constraintTop_toBottomOf="@+id/cycle" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/total"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/total_time"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            app:layout_constraintTop_toBottomOf="@+id/set" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"
@@ -104,44 +102,48 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{included.title}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView9"
-            app:layout_constraintEnd_toStartOf="@+id/guideline7" />
+            android:text="@{included.stringPrepare}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/prepare"
+            app:layout_constraintEnd_toStartOf="@+id/prepare_time_sec"
+            tools:text="10" />
 
         <TextView
             android:id="@+id/work_out_time"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView17"
-            app:layout_constraintEnd_toStartOf="@+id/guideline7" />
+            android:text="@{included.stringWorkout}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/workout"
+            app:layout_constraintEnd_toStartOf="@+id/work_out_time_sec"
+            tools:text="10" />
 
         <TextView
             android:id="@+id/interval_time"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@{included.stringInterval}"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView19"
-            app:layout_constraintEnd_toStartOf="@+id/guideline7" />
+            app:layout_constraintEnd_toStartOf="@+id/interval_time_sec"
+            tools:text="10" />
 
         <TextView
             android:id="@+id/cool_down_time"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView20"
-            app:layout_constraintEnd_toStartOf="@+id/guideline7" />
+            android:text="@{included.stringCoolDown}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/cool_down"
+            app:layout_constraintEnd_toStartOf="@+id/cool_down_time_sec"
+            tools:text="10" />
 
         <TextView
             android:id="@+id/cycle_count"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView21"
+            android:text="@{included.stringCycle}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/cycle"
             app:layout_constraintEnd_toStartOf="@+id/guideline7" />
 
         <TextView
@@ -149,8 +151,8 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView22"
+            android:text="@{included.stringSet}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/set"
             app:layout_constraintEnd_toStartOf="@+id/guideline7" />
 
         <TextView
@@ -158,9 +160,61 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView23"
+            android:text="@{included.stringTotalTime}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/total"
+            app:layout_constraintEnd_toStartOf="@+id/total_time_sec"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/prepare_time_sec"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sec"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/work_out_time_sec"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sec"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/prepare_time_sec" />
+
+        <TextView
+            android:id="@+id/interval_time_sec"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sec"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/work_out_time_sec" />
+
+        <TextView
+            android:id="@+id/total_time_sec"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/sec"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/interval_time_sec"/>
+
+        <TextView
+            android:id="@+id/cool_down_time_sec"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sec"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline7" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

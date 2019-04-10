@@ -21,6 +21,34 @@ public class Asset implements Parcelable {
     private long totalTime;
     private String comment;
 
+    public String getStringPrepare(){
+       return String.valueOf(prepare/1000);
+    }
+
+    public String getStringWorkout(){
+        return String.valueOf(workOut/1000);
+    }
+
+    public String getStringInterval(){
+        return String.valueOf(interval/1000);
+    }
+
+    public String getStringCoolDown(){
+        return String.valueOf(coolDown/1000);
+    }
+
+    public String getStringCycle(){
+        return String.valueOf(cycle);
+    }
+
+    public String getStringSet(){
+        return String.valueOf(set);
+    }
+
+    public String getStringTotalTime(){
+        return String.valueOf(totalTime/1000);
+    }
+
     public int getId() {
         return _id;
     }

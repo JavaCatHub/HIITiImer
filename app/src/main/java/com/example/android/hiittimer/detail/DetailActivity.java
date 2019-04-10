@@ -22,8 +22,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        setSupportActionBar(binding.detailToolbar);
         AdRequest adRequest = new AdRequest.Builder().build();
+        setSupportActionBar(binding.detailToolbar);
         binding.adView.loadAd(adRequest);
 
         DetailFragment fragment = findOrCreateFragment();
