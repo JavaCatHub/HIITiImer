@@ -1,12 +1,10 @@
 package com.example.android.hiittimer.ui.edit;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.example.android.hiittimer.ActivityUtils;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.EditActivityBinding;
-import com.example.android.hiittimer.main.MainActivity;
 import com.google.android.gms.ads.AdRequest;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +20,7 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.edit_activity);
+        binding = DataBindingUtil.setContentView(this, R.layout.edit_activity);
         AdRequest adRequest = new AdRequest.Builder().build();
         setSupportActionBar(binding.editToolbar);
         binding.adView.loadAd(adRequest);
@@ -31,23 +29,31 @@ public class EditActivity extends AppCompatActivity {
         EditFragment fragment = findOrCreateFragment();
 
         ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
-                fragment,R.id.contentFrame);
+                fragment, R.id.contentFrame);
 
-        binding.fabSave.setOnClickListener(v -> viewModel.getInsertLiveData().setValue(v));
+        binding.fabSave.setOnClickListener(v ->{
+                viewModel.getInsertLiveData().setValue(v);
+                finish();
+        });
     }
 
     private EditFragment findOrCreateFragment() {
-
-        int assetId = getIntent().getIntExtra(MainActivity.ASSET_KEY,0);
-
         EditFragment fragment = (EditFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
 
         if (fragment == null) {
-            fragment = EditFragment.newInstance(
-                    assetId
-            );
+            fragment = EditFragment.newInstance();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt(EditFragment.ARG_EDIT_ASSET_ID,
+                    getIntent().getIntExtra(EditFragment.ARG_EDIT_ASSET_ID, 0));
+            bundle.putBoolean(EditFragment.ARG_EDIT_KEY,
+                    getIntent().getBooleanExtra(EditFragment.ARG_EDIT_KEY, false));
+            fragment.setArguments(bundle);
         }
+
         return fragment;
     }
+
+
 }

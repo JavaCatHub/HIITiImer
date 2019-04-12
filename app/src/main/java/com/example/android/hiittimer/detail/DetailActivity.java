@@ -2,14 +2,18 @@ package com.example.android.hiittimer.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.android.hiittimer.ActivityUtils;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.ActivityDetailBinding;
 import com.example.android.hiittimer.main.MainActivity;
+import com.example.android.hiittimer.ui.edit.EditFragment;
 import com.google.android.gms.ads.AdRequest;
 
 public class DetailActivity extends AppCompatActivity {
@@ -32,6 +36,19 @@ public class DetailActivity extends AppCompatActivity {
                 fragment,R.id.contentFrame);
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+
+        setOnClickListener();
+        initEvent();
+
+    }
+
+    private void initEvent() {
+        viewModel.getEditAssetEvent().observed(this, aVoid -> {
+            Intent intent = new Intent();
+            intent.putExtra(EditFragment.ARG_EDIT_KEY,true);
+            intent.putExtra(EditFragment.ARG_EDIT_ASSET_ID,viewModel.getAssetId());
+            startActivity(intent);
+        });
     }
 
     private DetailFragment findOrCreateFragment() {
@@ -45,5 +62,14 @@ public class DetailActivity extends AppCompatActivity {
             fragment = DetailFragment.newInstance(assetId);
         }
         return fragment;
+    }
+
+    private void setOnClickListener(){
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.getEditAssetEvent().call();
+            }
+        });
     }
 }

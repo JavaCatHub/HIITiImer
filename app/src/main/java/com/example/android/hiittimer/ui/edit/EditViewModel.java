@@ -14,6 +14,10 @@ import androidx.lifecycle.LiveData;
 public class EditViewModel extends AndroidViewModel {
     private Repository repository;
 
+    private boolean mIsNewAsset;
+
+    private int mAssetId;
+
     private NavigateLiveData<View> insert = new NavigateLiveData<>();
 
     public EditViewModel(@NonNull Application application) {
@@ -21,15 +25,23 @@ public class EditViewModel extends AndroidViewModel {
         repository = new Repository(application);
     }
 
-    public LiveData<Asset> start(int assetId){
-        return repository.getAsset(assetId);
+    public void setIsNewAsset(boolean mIsNewAsset) {
+        this.mIsNewAsset = mIsNewAsset;
     }
 
-    public void saveAsset(Asset asset){
+    public LiveData<Asset> start() {
+        return repository.getAsset(mAssetId);
+    }
+
+    public void saveAsset(Asset asset) {
         repository.saveAsset(asset);
     }
 
-    public NavigateLiveData<View> getInsertLiveData(){
+    public NavigateLiveData<View> getInsertLiveData() {
         return insert;
+    }
+
+    public void setAssetId(int assetId) {
+        mAssetId = assetId;
     }
 }

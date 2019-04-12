@@ -46,7 +46,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            assetId = getArguments().getInt(ARG_PARAM1, 0);
+            assetId = getArguments().getInt(ARG_PARAM1);
         }
     }
 

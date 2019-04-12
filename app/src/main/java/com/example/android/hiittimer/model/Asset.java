@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Asset implements Parcelable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int _id;
     private String title;
     private long prepare;
@@ -144,6 +144,12 @@ public class Asset implements Parcelable {
         setSet(2);
         setTotalTime(calculateTotalTime());
         setComment("This is the test");
+    }
+
+    public static Asset populateAsset(){
+        Asset defaultAsset = new Asset();
+        defaultAsset.setDefaultMyself();
+        return defaultAsset;
     }
 
     @Override

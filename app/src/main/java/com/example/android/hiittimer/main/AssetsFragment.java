@@ -48,11 +48,17 @@ public class AssetsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.startLocal().observe(requireActivity(), this::initView);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.startLocal().observe(this, this::initView);
-        binding.fab.setOnClickListener(v -> mViewModel.getOpenDetailEditEvent().setValue(v));
+//        mViewModel.startLocal().observe(this, this::initView);
+        binding.fab.setOnClickListener(v -> mViewModel.addNewAsset());
     }
 
     private void initView(List<Asset> list) {

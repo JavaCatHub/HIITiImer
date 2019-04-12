@@ -13,6 +13,7 @@ import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.timer.TimerActivity;
 import com.example.android.hiittimer.ui.edit.EditActivity;
+import com.example.android.hiittimer.ui.edit.EditFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -20,6 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModel.getOpenDetailEditEvent().observed(this, this::startEditActivity);
+        mViewModel.getNewAssetEvent().observed(this, aVoid -> addNewAsset());
         mViewModel.getOpenTimerActivity().observed(this,this::startTimerActivity);
     }
 
@@ -82,11 +85,6 @@ public class MainActivity extends AppCompatActivity {
             intent = new Intent(this, DetailActivity.class);
             Asset asset = (Asset) obj;
             intent.putExtra(ASSET_KEY, asset.getId());
-        }else if(obj instanceof View){
-            intent = new Intent(this, EditActivity.class);
-            Asset asset = new Asset();
-            asset.setDefaultMyself();
-            intent.putExtra(ASSET_KEY,asset.getId());
         }else {
             Timber.e("There happened to a problem");
             return;
@@ -99,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
         Asset asset = new Asset();
         asset.setDefaultMyself();
         intent.putExtra(ASSET_KEY,asset);
+        startActivity(intent);
+    }
+
+    private void addNewAsset(){
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra(EditFragment.ARG_EDIT_KEY,false);
         startActivity(intent);
     }
 }

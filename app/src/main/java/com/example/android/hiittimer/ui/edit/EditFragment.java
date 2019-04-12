@@ -1,20 +1,23 @@
 package com.example.android.hiittimer.ui.edit;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import timber.log.Timber;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.EditFragmentBinding;
 import com.example.android.hiittimer.model.Asset;
@@ -22,31 +25,26 @@ import com.example.android.hiittimer.model.Asset;
 import java.util.Locale;
 
 public class EditFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
+    public static final String ARG_EDIT_ASSET_ID = "EDIT_ASSET_ID";
+
+    public static final String ARG_EDIT_KEY = "key";
 
     private EditViewModel mViewModel;
 
     private EditFragmentBinding binding;
 
-    private int assetId;
-
-    public static EditFragment newInstance(int assetId) {
-        EditFragment fragment = new EditFragment();
-        Bundle arguments = new Bundle();
-        arguments.putInt(ARG_PARAM1, assetId);
-        fragment.setArguments(arguments);
-
-        return fragment;
+    public static EditFragment newInstance() {
+        return new EditFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            assetId = getArguments().getInt(ARG_PARAM1, 0);
+            if(getArguments().getBoolean(ARG_EDIT_KEY))
+            mViewModel.setAssetId(getArguments().getInt(ARG_EDIT_ASSET_ID, 0));
         }
     }
-
 
     @Nullable
     @Override
@@ -62,12 +60,8 @@ public class EditFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(EditViewModel.class);
         initViews();
-        mViewModel.getInsertLiveData().observed(this, new Observer<View>() {
-            @Override
-            public void onChanged(View view) {
-                insertAsset();
-            }
-        });
+        onClickListener();
+        mViewModel.getInsertLiveData().observed(this, view -> insertAsset());
     }
 
     private void showFragmentDialog(TextView textView) {
@@ -86,10 +80,10 @@ public class EditFragment extends Fragment {
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     int min = numMin.getValue() * 60;
                     int sec = numSec.getValue();
-                    if (isCheck(min,sec)){
+                    if (isCheck(min, sec)) {
                         textView.setText(String.valueOf(min + sec));
-                    }else{
-                        Toast.makeText(getActivity(),"Please enter at least one second.",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Please enter at least one second.", Toast.LENGTH_SHORT).show();
                         Timber.d("error value");
                     }
 
@@ -99,9 +93,20 @@ public class EditFragment extends Fragment {
     }
 
     private void initViews() {
-        mViewModel.start(assetId).observe(this, asset -> {
-            binding.setAsset(asset);
-        });
+        if (getArguments() != null) {
+            if (!getArguments().getBoolean(ARG_EDIT_KEY)) {
+                mViewModel.setIsNewAsset(false);
+                Asset defaultAsset = new Asset();
+                defaultAsset.setDefaultMyself();
+                binding.setAsset(defaultAsset);
+            }
+        } else {
+            mViewModel.setIsNewAsset(true);
+            mViewModel.start().observe(this, asset -> binding.setAsset(asset));
+        }
+    }
+
+    private void onClickListener() {
         binding.include.prepareTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
         binding.include.workOutTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
         binding.include.intervalTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
@@ -114,11 +119,11 @@ public class EditFragment extends Fragment {
         numberPicker.setFormatter(value -> String.format(Locale.US, "%02d", value));
     }
 
-    private boolean isCheck(int min, int sec){
+    private boolean isCheck(int min, int sec) {
         return min + sec != 0;
     }
 
-    private void insertAsset(){
+    private void insertAsset() {
         Asset asset = new Asset();
         asset.setTitle(binding.addAssetTitle.getText().toString());
         asset.setPrepare(parseTextViewToLong(binding.include.prepareTime));
@@ -130,14 +135,13 @@ public class EditFragment extends Fragment {
         asset.setComment(binding.addAssetComment.getText().toString());
         asset.calculateTotalTime();
         mViewModel.saveAsset(asset);
-
     }
 
-    private long parseTextViewToLong(TextView textView){
-       return Long.parseLong(textView.getText().toString()) * 1000;
+    private long parseTextViewToLong(TextView textView) {
+        return Long.parseLong(textView.getText().toString()) * 1000;
     }
 
-    private int parseTextViewToInt(TextView textView){
+    private int parseTextViewToInt(TextView textView) {
         return Integer.parseInt(textView.getText().toString());
     }
 }
