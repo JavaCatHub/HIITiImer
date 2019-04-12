@@ -32,7 +32,7 @@ public class EditActivity extends AppCompatActivity {
                 fragment, R.id.contentFrame);
 
         binding.fabSave.setOnClickListener(v ->{
-                viewModel.getInsertLiveData().setValue(v);
+                viewModel.getSaveLiveData().call();
                 finish();
         });
     }

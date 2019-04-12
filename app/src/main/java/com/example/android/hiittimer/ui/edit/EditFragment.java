@@ -37,15 +37,6 @@ public class EditFragment extends Fragment {
         return new EditFragment();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            if(getArguments().getBoolean(ARG_EDIT_KEY))
-            mViewModel.setAssetId(getArguments().getInt(ARG_EDIT_ASSET_ID, 0));
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -61,7 +52,7 @@ public class EditFragment extends Fragment {
         mViewModel = ViewModelProviders.of(requireActivity()).get(EditViewModel.class);
         initViews();
         onClickListener();
-        mViewModel.getInsertLiveData().observed(this, view -> insertAsset());
+        mViewModel.getSaveLiveData().observed(this, view -> saveAsset());
     }
 
     private void showFragmentDialog(TextView textView) {
@@ -94,15 +85,16 @@ public class EditFragment extends Fragment {
 
     private void initViews() {
         if (getArguments() != null) {
-            if (!getArguments().getBoolean(ARG_EDIT_KEY)) {
-                mViewModel.setIsNewAsset(false);
+            if (getArguments().getBoolean(ARG_EDIT_KEY)) {
+                mViewModel.setIsNewAsset(true);
                 Asset defaultAsset = new Asset();
                 defaultAsset.setDefaultMyself();
                 binding.setAsset(defaultAsset);
+            } else {
+                mViewModel.setIsNewAsset(false);
+                mViewModel.setAssetId(getArguments().getInt(ARG_EDIT_ASSET_ID, 0));
+                mViewModel.start().observe(this, asset -> binding.setAsset(asset));
             }
-        } else {
-            mViewModel.setIsNewAsset(true);
-            mViewModel.start().observe(this, asset -> binding.setAsset(asset));
         }
     }
 
@@ -123,7 +115,7 @@ public class EditFragment extends Fragment {
         return min + sec != 0;
     }
 
-    private void insertAsset() {
+    private void saveAsset() {
         Asset asset = new Asset();
         asset.setTitle(binding.addAssetTitle.getText().toString());
         asset.setPrepare(parseTextViewToLong(binding.include.prepareTime));

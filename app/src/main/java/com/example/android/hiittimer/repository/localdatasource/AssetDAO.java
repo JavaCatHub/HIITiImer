@@ -22,7 +22,7 @@ public interface AssetDAO {
     LiveData<Asset> getAsset(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveAsset(Asset asset);
+    void insertAsset(Asset asset);
 
     @Update
     void updateAsset(Asset asset);

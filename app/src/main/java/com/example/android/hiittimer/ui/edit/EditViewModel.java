@@ -18,7 +18,7 @@ public class EditViewModel extends AndroidViewModel {
 
     private int mAssetId;
 
-    private NavigateLiveData<View> insert = new NavigateLiveData<>();
+    private NavigateLiveData<Void> save = new NavigateLiveData<>();
 
     public EditViewModel(@NonNull Application application) {
         super(application);
@@ -33,15 +33,26 @@ public class EditViewModel extends AndroidViewModel {
         return repository.getAsset(mAssetId);
     }
 
-    public void saveAsset(Asset asset) {
-        repository.saveAsset(asset);
+    public void saveAsset(Asset asset){
+        if (mIsNewAsset){
+            insertAsset(asset);
+        }else{
+            asset.setId(mAssetId);
+            updateAsset(asset);
+        }
     }
 
-    public NavigateLiveData<View> getInsertLiveData() {
-        return insert;
+    private void insertAsset(Asset asset) {
+        repository.insertAsset(asset);
+    }
+
+    public NavigateLiveData<Void> getSaveLiveData() {
+        return save;
     }
 
     public void setAssetId(int assetId) {
         mAssetId = assetId;
     }
+
+    private void updateAsset(Asset asset){repository.updateAsset(asset);}
 }

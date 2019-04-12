@@ -18,7 +18,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private final Repository repository;
     private CompositeDisposable disposable;
-    private NavigateLiveData<Object> mOpenEditDetail = new NavigateLiveData<>();
+    private NavigateLiveData<Asset> mOpenDetailEvent = new NavigateLiveData<>();
     private NavigateLiveData<Void> mOpenEditEvent = new NavigateLiveData<>();
     private NavigateLiveData<View> mOpenTimerActivity = new NavigateLiveData<>();
 
@@ -32,8 +32,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         return repository.getAssets();
     }
 
-    public NavigateLiveData<Object> getOpenDetailEditEvent() {
-        return mOpenEditDetail;
+    public NavigateLiveData<Asset> getOpenDetailEvent() {
+        return mOpenDetailEvent;
     }
 
     public NavigateLiveData<View> getOpenTimerActivity() {
@@ -46,9 +46,5 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void addNewAsset() {
         mOpenEditEvent.call();
-    }
-
-    public void saveAsset(Asset asset){
-        repository.saveAsset(asset);
     }
 }

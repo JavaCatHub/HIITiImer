@@ -26,8 +26,8 @@ public class Repository {
 
     public LiveData<Asset> getAsset(int id){return mLocalDataSource.getAsset(id);}
 
-    public void saveAsset(Asset asset) {
-        mLocalDataSource.saveAsset(asset);
+    public void insertAsset(Asset asset) {
+        mLocalDataSource.insertAsset(asset);
     }
 
     public void updateAsset(Asset asset){

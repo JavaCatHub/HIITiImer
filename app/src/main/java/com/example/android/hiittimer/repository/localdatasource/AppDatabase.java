@@ -40,7 +40,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(context).assetDAO().saveAsset(Asset.populateAsset()));
+                        Executors.newSingleThreadScheduledExecutor().execute(() -> getInstance(context).assetDAO().insertAsset(Asset.populateAsset()));
                     }
                 })
                 .build();

@@ -1,5 +1,7 @@
 package com.example.android.hiittimer;
 
-public interface ItemClickListener<T> {
-    void onClick(T object);
+import com.example.android.hiittimer.model.Asset;
+
+public interface ItemClickListener{
+    void onClick(Asset asset);
 }

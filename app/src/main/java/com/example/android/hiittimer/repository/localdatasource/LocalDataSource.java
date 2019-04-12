@@ -50,8 +50,8 @@ public class LocalDataSource {
                 });
     }
 
-    public void saveAsset(Asset asset) {
-        completable(() -> mAssetDAO.saveAsset(asset));
+    public void insertAsset(Asset asset) {
+        completable(() -> mAssetDAO.insertAsset(asset));
     }
 
     public void updateAsset(Asset asset) {

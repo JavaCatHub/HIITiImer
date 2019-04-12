@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
 
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        mViewModel.getOpenDetailEditEvent().observed(this, this::startEditActivity);
+        mViewModel.getOpenDetailEvent().observed(this, this::startDetailActivity);
         mViewModel.getNewAssetEvent().observed(this, aVoid -> addNewAsset());
-        mViewModel.getOpenTimerActivity().observed(this,this::startTimerActivity);
+        mViewModel.getOpenTimerActivity().observed(this, this::startTimerActivity);
     }
 
     @Override
@@ -79,30 +79,23 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void startEditActivity(Object obj) {
-        Intent intent;
-        if (obj instanceof Asset) {
-            intent = new Intent(this, DetailActivity.class);
-            Asset asset = (Asset) obj;
-            intent.putExtra(ASSET_KEY, asset.getId());
-        }else {
-            Timber.e("There happened to a problem");
-            return;
-        }
+    public void startDetailActivity(Asset asset) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(ASSET_KEY, asset.getId());
         startActivity(intent);
     }
 
-    public void startTimerActivity(View view){
+    public void startTimerActivity(View view) {
         Intent intent = new Intent(this, TimerActivity.class);
         Asset asset = new Asset();
         asset.setDefaultMyself();
-        intent.putExtra(ASSET_KEY,asset);
+        intent.putExtra(ASSET_KEY, asset);
         startActivity(intent);
     }
 
-    private void addNewAsset(){
+    private void addNewAsset() {
         Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra(EditFragment.ARG_EDIT_KEY,false);
+        intent.putExtra(EditFragment.ARG_EDIT_KEY, true);
         startActivity(intent);
     }
 }

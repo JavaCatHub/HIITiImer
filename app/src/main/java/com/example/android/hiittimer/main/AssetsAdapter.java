@@ -39,7 +39,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsAdap
     public void onBindViewHolder(@NonNull AssetsAdapterViewHolder holder, int position) {
         holder.binding.setAsset(assetList.get(position));
         ItemClickListener listener = asset -> {
-            viewModel.getOpenDetailEditEvent().setValue(asset);
+            viewModel.getOpenDetailEvent().setValue(asset);
             Timber.d("touched");
         };
         holder.binding.setListener(listener);
