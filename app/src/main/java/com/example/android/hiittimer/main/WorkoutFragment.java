@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.FragmentWorkoutBinding;
-import com.example.android.hiittimer.main.MainActivityViewModel;
+import com.example.android.hiittimer.model.Asset;
 
 public class WorkoutFragment extends Fragment {
 
@@ -32,7 +33,6 @@ public class WorkoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_workout,container,false);
-       binding.setViewModel(mViewModel);
        return binding.getRoot();
     }
 
@@ -40,6 +40,13 @@ public class WorkoutFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        mViewModel.getMutableAsset().observe(this, new Observer<Asset>() {
+            @Override
+            public void onChanged(Asset asset) {
+                binding.setAsset(asset);
+            }
+        });
+
         binding.playWorkout.setOnClickListener(v -> mViewModel.getOpenTimerActivity().setValue(v));
     }
 }

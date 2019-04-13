@@ -34,8 +34,8 @@ public class Repository {
         mLocalDataSource.updateAsset(asset);
     }
 
-    public void deleteAsset(Asset asset){
-        mLocalDataSource.deleteAsset(asset);
+    public void deleteAsset(int id){
+        mLocalDataSource.deleteAsset(id);
     }
 }
 

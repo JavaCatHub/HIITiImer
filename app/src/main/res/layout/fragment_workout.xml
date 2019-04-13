@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="view_model"
-            type="com.example.android.hiittimer.main.MainActivityViewModel"/>
+            name="asset"
+            type="com.example.android.hiittimer.model.Asset" />
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".main.WorkoutFragment">
@@ -22,16 +24,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="16dp" />
-
-        <TextView
-            android:id="@+id/current_work"
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/current"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/play_workout"
@@ -50,8 +42,11 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBaseline_toBaselineOf="@+id/current_work"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            android:layout_marginTop="8dp"
+            android:text="@{asset.title}"
+            app:layout_constraintBottom_toTopOf="@+id/include2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Default" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -62,12 +57,14 @@
             app:layout_constraintGuide_end="124dp" />
 
         <include
+            android:id="@+id/include2"
             layout="@layout/asset_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/current_work" />
+            bind:included="@{asset}"
+            tools:layout_editor_absoluteY="29dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

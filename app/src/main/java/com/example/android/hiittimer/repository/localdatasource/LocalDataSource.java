@@ -58,7 +58,7 @@ public class LocalDataSource {
         completable(() -> mAssetDAO.updateAsset(asset));
     }
 
-    public void deleteAsset(Asset asset) {
-        completable(() -> mAssetDAO.deleteAsset(asset));
+    public void deleteAsset(int id) {
+        completable(() -> mAssetDAO.deleteAsset(id));
     }
 }

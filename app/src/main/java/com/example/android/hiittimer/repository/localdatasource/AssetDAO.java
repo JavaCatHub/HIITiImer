@@ -27,6 +27,6 @@ public interface AssetDAO {
     @Update
     void updateAsset(Asset asset);
 
-    @Delete
-    void deleteAsset(Asset asset);
+    @Query("DELETE FROM asset WHERE _id = :id")
+    void deleteAsset(int id);
 }

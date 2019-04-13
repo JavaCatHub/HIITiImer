@@ -1,7 +1,9 @@
 package com.example.android.hiittimer.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +23,11 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
-import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String ASSET_KEY = "asset";
 
@@ -62,6 +63,28 @@ public class MainActivity extends AppCompatActivity {
         mViewModel.getOpenDetailEvent().observed(this, this::startDetailActivity);
         mViewModel.getNewAssetEvent().observed(this, aVoid -> addNewAsset());
         mViewModel.getOpenTimerActivity().observed(this, this::startTimerActivity);
+
+        setUpSharedPreferences();
+    }
+
+    private void setUpSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        int id = sharedPreferences.getInt("id", 1);
+        mViewModel.asset(id).observe(this,
+                asset ->
+                {
+                    mViewModel.setMutableAsset(asset);
+                    mViewModel.setAsset(asset);
+                }
+        );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -87,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startTimerActivity(View view) {
         Intent intent = new Intent(this, TimerActivity.class);
-        Asset asset = new Asset();
-        asset.setDefaultMyself();
-        intent.putExtra(ASSET_KEY, asset);
+        intent.putExtra(ASSET_KEY, mViewModel.getAsset());
         startActivity(intent);
     }
 
@@ -97,5 +118,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(EditFragment.ARG_EDIT_KEY, true);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("default_asset")) {
+        }
+        sharedPreferences.getInt(key, 1);
     }
 }

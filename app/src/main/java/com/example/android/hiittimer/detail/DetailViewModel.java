@@ -35,5 +35,9 @@ public class DetailViewModel extends AndroidViewModel {
         mAssetId = id;
         return repository.getAsset(id);
     }
+
+    public void delete(){
+        repository.deleteAsset(mAssetId);
+    }
 }
 

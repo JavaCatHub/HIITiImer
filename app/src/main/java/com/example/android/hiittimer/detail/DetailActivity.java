@@ -4,6 +4,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.android.hiittimer.ActivityUtils;
 import com.example.android.hiittimer.R;
@@ -19,6 +22,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private DetailViewModel viewModel;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +30,7 @@ public class DetailActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         setSupportActionBar(binding.detailToolbar);
         binding.adView.loadAd(adRequest);
+
 
         DetailFragment fragment = findOrCreateFragment();
 
@@ -35,6 +40,26 @@ public class DetailActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
         viewModel.getEditAssetEvent().observed(this, aVoid -> initEvent());
         setOnClickListener();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.detail,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.delete : {
+                viewModel.delete();
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 
