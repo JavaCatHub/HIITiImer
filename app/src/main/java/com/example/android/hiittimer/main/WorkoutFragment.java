@@ -1,12 +1,13 @@
 package com.example.android.hiittimer.main;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import timber.log.Timber;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,10 @@ import android.view.ViewGroup;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.FragmentWorkoutBinding;
 import com.example.android.hiittimer.model.Asset;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorkoutFragment extends Fragment {
 
@@ -50,14 +55,47 @@ public class WorkoutFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        if(getArguments() != null){
-            mViewModel.getAssetById(getArguments().getInt(ASSET_KEY)).observe(this, new Observer<Asset>() {
-                @Override
-                public void onChanged(Asset asset) {
-                    binding.setAsset(asset);
-                }
+
+        mViewModel.getDefaultAsset().observe(this, asset -> {
+            Timber.i("On get Default Asset");
+            if (asset != null){
+                binding.workOutFragment.setVisibility(View.VISIBLE);
+                binding.setAsset(asset);
+                mViewModel.setAsset(asset);
+            }else{
+                binding.workOutFragment.setVisibility(View.INVISIBLE);
+                Snackbar.make(binding.workOutFragment,"Choose or Create Asset", Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose your Asset");
+
+        mViewModel.getAssetList().observe(this, assets -> {
+            List<String> list = new ArrayList<>();
+            for (Asset asset : assets) {
+                list.add(asset.getTitle());
+            }
+
+            String[] array = list.toArray(new String[0]);
+
+            builder.setItems(array, (dialog, which) -> {
+                dialog.dismiss();
+                mViewModel.updateDefaultAsset(
+                        false,
+                        mViewModel.getAsset().getId()
+                );
+                mViewModel.updateDefaultAsset(
+                        true,
+                        assets.get(which).getId()
+                );
             });
-        }
+        });
+
+        binding.currentAsset.setOnClickListener(v -> builder.show());
+
         binding.playWorkout.setOnClickListener(v -> mViewModel.getOpenTimerActivity().setValue(v));
     }
+
+
 }

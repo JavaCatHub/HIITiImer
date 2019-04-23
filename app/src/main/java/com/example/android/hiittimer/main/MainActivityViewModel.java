@@ -1,7 +1,6 @@
 package com.example.android.hiittimer.main;
 
 import android.app.Application;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 
 import com.example.android.hiittimer.NavigateLiveData;
@@ -20,7 +19,7 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private final Repository repository;
     private CompositeDisposable disposable;
-    private MutableLiveData<Asset> asset = new MutableLiveData<>();
+    private MutableLiveData<Integer> assetId = new MutableLiveData<>();
     private Asset mAsset;
     private NavigateLiveData<Asset> mOpenDetailEvent = new NavigateLiveData<>();
     private NavigateLiveData<Void> mOpenEditEvent = new NavigateLiveData<>();
@@ -37,8 +36,18 @@ public class MainActivityViewModel extends AndroidViewModel {
         return repository.getAssets();
     }
 
-    public LiveData<Asset> getAssetById(int id){
+    public LiveData<Asset> getAssetById(int id) {
         return repository.getAsset(id);
+    }
+
+    public LiveData<List<Asset>> getAssetList(){return repository.getAssets();}
+
+    public LiveData<Asset> getDefaultAsset(){
+        return repository.getDefaultAsset();
+    }
+
+    public void updateDefaultAsset(boolean status, int id){
+        repository.updateDefaultAsset(status,id);
     }
 
     public Asset getAsset() {
@@ -49,12 +58,12 @@ public class MainActivityViewModel extends AndroidViewModel {
         this.mAsset = asset;
     }
 
-    public LiveData<Asset> getMutableAsset() {
-        return asset;
+    public LiveData<Integer> getAssetId() {
+        return assetId;
     }
 
-    public void setMutableAsset(Asset asset) {
-        this.asset.setValue(asset);
+    public void setAssetId(int assetId) {
+        this.assetId.setValue(assetId);
     }
 
     public NavigateLiveData<Asset> getOpenDetailEvent() {

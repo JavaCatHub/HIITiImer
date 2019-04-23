@@ -20,6 +20,7 @@ public class Asset implements Parcelable {
     private int set;
     private long totalTime;
     private String comment;
+    private boolean isDefault;
 
     public String getStringPrepare(){
        return String.valueOf(prepare/1000);
@@ -129,6 +130,14 @@ public class Asset implements Parcelable {
         this.comment = comment;
     }
 
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
+
     public long calculateTotalTime() {
         this.totalTime = (this.workOut + this.interval) * this.cycle * this.set + this.coolDown * (this.set - 1) + this.prepare;
         return totalTime;
@@ -144,6 +153,7 @@ public class Asset implements Parcelable {
         setSet(2);
         setTotalTime(calculateTotalTime());
         setComment("This is the test");
+        setDefault(true);
     }
 
     public static Asset populateAsset(){
@@ -169,6 +179,7 @@ public class Asset implements Parcelable {
         dest.writeInt(this.set);
         dest.writeLong(this.totalTime);
         dest.writeString(this.comment);
+        dest.writeByte((byte) (isDefault ? 1 : 0));
     }
 
     public Asset() {
@@ -185,6 +196,7 @@ public class Asset implements Parcelable {
         this.set = in.readInt();
         this.totalTime = in.readLong();
         this.comment = in.readString();
+        this.isDefault = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<Asset> CREATOR = new Parcelable.Creator<Asset>() {

@@ -1,12 +1,16 @@
 package com.example.android.hiittimer.detail;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import timber.log.Timber;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.android.hiittimer.ActivityUtils;
 import com.example.android.hiittimer.R;
@@ -31,11 +35,10 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(binding.detailToolbar);
         binding.adView.loadAd(adRequest);
 
-
         DetailFragment fragment = findOrCreateFragment();
 
         ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
-                fragment,R.id.contentFrame);
+                fragment, R.id.contentFrame);
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
         viewModel.getEditAssetEvent().observed(this, aVoid -> initEvent());
@@ -44,19 +47,40 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.select);
+        if (viewModel.getAsset() != null && viewModel.getAsset().isDefault()) {
+            item.setIcon(R.drawable.ic_bookmark_white_24dp);
+        } else {
+            item.setIcon(R.drawable.ic_bookmark_border_white_24dp);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.detail,menu);
+        inflater.inflate(R.menu.detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.delete : {
+        switch (item.getItemId()) {
+            case R.id.delete: {
                 viewModel.delete();
                 finish();
                 return true;
+            }
+            case R.id.select: {
+                if (viewModel.getAsset().isDefault()) {
+                    Timber.i("On update false");
+                    viewModel.setTrueToFalse();
+                } else {
+                    Timber.i("On update true");
+                    viewModel.updateDefaultAsset(true, viewModel.getAsset().getId());
+                }
+                break;
             }
         }
         return super.onOptionsItemSelected(item);
@@ -64,10 +88,10 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
-            Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra(EditFragment.ARG_EDIT_KEY,false);
-            intent.putExtra(EditFragment.ARG_EDIT_ASSET_ID,viewModel.getAssetId());
-            startActivity(intent);
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra(EditFragment.ARG_EDIT_KEY, false);
+        intent.putExtra(EditFragment.ARG_EDIT_ASSET_ID, viewModel.getAssetId());
+        startActivity(intent);
     }
 
     private DetailFragment findOrCreateFragment() {
@@ -83,7 +107,7 @@ public class DetailActivity extends AppCompatActivity {
         return fragment;
     }
 
-    private void setOnClickListener(){
+    private void setOnClickListener() {
         binding.fab.setOnClickListener(v -> viewModel.getEditAssetEvent().call());
     }
 }

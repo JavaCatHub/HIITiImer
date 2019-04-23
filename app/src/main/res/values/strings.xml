@@ -37,6 +37,7 @@
     <string name="permission_rationale">Location data is used as part of the Google Fit API</string>
 
     <string name="connection_succeeded">Connection succeeded</string>
+    <string name="select">select</string>
 
 
 </resources>

@@ -25,12 +25,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.fitness.Fitness;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -40,6 +38,7 @@ import timber.log.Timber;
 
 // TODO preference を変更する機能を追加
 // TODO login機能を追加
+// TODO workout fragment 画面でデータベースに何もなかった時のケース
 
 public class MainActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setUpSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        id = sharedPreferences.getInt("id", 1);
+        id = sharedPreferences.getInt("Default Asset", 1);
     }
 
     @Override
@@ -174,13 +173,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void signOut(GoogleSignInClient client){
-        client.revokeAccess().addOnCompleteListener(this, new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                account =  null;
-                invalidateOptionsMenu();
-                Snackbar.make(view, "Revoked", Snackbar.LENGTH_SHORT).show();
-            }
+        client.revokeAccess().addOnCompleteListener(this, task -> {
+            account =  null;
+            invalidateOptionsMenu();
+            Snackbar.make(view, "Revoked", Snackbar.LENGTH_SHORT).show();
         });
     }
 
@@ -222,8 +218,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("default_asset")) {
+        if (key.equals("Default Asset")) {
+            mViewModel.setAssetId(sharedPreferences.getInt(key,1));
         }
-        sharedPreferences.getInt(key, 1);
     }
 }

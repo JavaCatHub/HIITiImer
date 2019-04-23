@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.FragmentDetailBinding;
 
+import java.util.Objects;
+
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -64,7 +66,9 @@ public class DetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(requireActivity()).get(DetailViewModel.class);
         viewModel.start(assetId).observe(this, asset -> {
+            viewModel.setAsset(asset);
             binding.setAsset(asset);
+            requireActivity().invalidateOptionsMenu();
         });
 
 

@@ -24,17 +24,29 @@ public class Repository {
         return mLocalDataSource.getAssets();
     }
 
-    public LiveData<Asset> getAsset(int id){return mLocalDataSource.getAsset(id);}
+    public LiveData<Asset> getAsset(int id) {
+        return mLocalDataSource.getAsset(id);
+    }
+
+    public LiveData<Asset> getDefaultAsset() {
+        return mLocalDataSource.getDefaultAsset();
+    }
 
     public void insertAsset(Asset asset) {
         mLocalDataSource.insertAsset(asset);
     }
 
-    public void updateAsset(Asset asset){
+    public void updateAsset(Asset asset) {
         mLocalDataSource.updateAsset(asset);
     }
 
-    public void deleteAsset(int id){
+    public void updateDefaultAsset(boolean status, int id) {
+        mLocalDataSource.updateDefaultAsset(status,id);
+    }
+
+    public void setTrueToFalse(){mLocalDataSource.setTrueToFalse();}
+
+    public void deleteAsset(int id) {
         mLocalDataSource.deleteAsset(id);
     }
 }
