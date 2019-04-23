@@ -16,7 +16,7 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
     private List<CountDown> timerList = new ArrayList<>();
 
-    private final long interval = 1000;
+    private final long interval = 500;
 
     public TimerViewModelFactory(Asset asset) {
         prepareCountDownSet(asset);
@@ -42,6 +42,6 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
             timerList.add(new CountDown(asset.getCoolDown(), interval, "Cool down", i, asset.getCycle()));
         }
         timerList.remove(timerList.size() - 1);
-        Timber.d(timerList.toString());
+        Timber.i(timerList.toString());
     }
 }

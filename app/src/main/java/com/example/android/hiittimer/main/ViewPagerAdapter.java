@@ -1,5 +1,7 @@
 package com.example.android.hiittimer.main;
 
+import com.example.android.hiittimer.model.Asset;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -7,16 +9,18 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private String[] tabTitles = {"Work out", "Assets"};
+    private int id;
 
-    public ViewPagerAdapter(FragmentManager fm) {
+    public ViewPagerAdapter(FragmentManager fm, int id) {
         super(fm);
+        this.id = id;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new WorkoutFragment();
+                return WorkoutFragment.newInstance(id);
             case 1:
                 return new AssetsFragment();
             default:

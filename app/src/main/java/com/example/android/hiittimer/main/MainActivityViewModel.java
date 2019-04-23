@@ -1,6 +1,7 @@
 package com.example.android.hiittimer.main;
 
 import android.app.Application;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 
 import com.example.android.hiittimer.NavigateLiveData;
@@ -21,7 +22,6 @@ public class MainActivityViewModel extends AndroidViewModel {
     private CompositeDisposable disposable;
     private MutableLiveData<Asset> asset = new MutableLiveData<>();
     private Asset mAsset;
-    private MutableLiveData<Integer> mAssetId = new MutableLiveData<>();
     private NavigateLiveData<Asset> mOpenDetailEvent = new NavigateLiveData<>();
     private NavigateLiveData<Void> mOpenEditEvent = new NavigateLiveData<>();
     private NavigateLiveData<View> mOpenTimerActivity = new NavigateLiveData<>();
@@ -37,7 +37,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return repository.getAssets();
     }
 
-    public LiveData<Asset> asset(int id){
+    public LiveData<Asset> getAssetById(int id){
         return repository.getAsset(id);
     }
 

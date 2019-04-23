@@ -20,8 +20,18 @@ public class WorkoutFragment extends Fragment {
 
     private FragmentWorkoutBinding binding;
     private MainActivityViewModel mViewModel;
+    private static final String ASSET_KEY = "key";
 
     public WorkoutFragment() {
+    }
+
+    public static WorkoutFragment newInstance(int id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ASSET_KEY, id);
+        WorkoutFragment fragment = new WorkoutFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     @Override
@@ -32,21 +42,22 @@ public class WorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       binding = DataBindingUtil.inflate(inflater, R.layout.fragment_workout,container,false);
-       return binding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_workout, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-        mViewModel.getMutableAsset().observe(this, new Observer<Asset>() {
-            @Override
-            public void onChanged(Asset asset) {
-                binding.setAsset(asset);
-            }
-        });
-
+        if(getArguments() != null){
+            mViewModel.getAssetById(getArguments().getInt(ASSET_KEY)).observe(this, new Observer<Asset>() {
+                @Override
+                public void onChanged(Asset asset) {
+                    binding.setAsset(asset);
+                }
+            });
+        }
         binding.playWorkout.setOnClickListener(v -> mViewModel.getOpenTimerActivity().setValue(v));
     }
 }

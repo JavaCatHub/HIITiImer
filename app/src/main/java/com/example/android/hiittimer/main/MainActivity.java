@@ -7,9 +7,9 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.android.hiittimer.BuildConfig;
+import com.example.android.hiittimer.CreateMenuAsyncTask;
 import com.example.android.hiittimer.detail.DetailActivity;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
@@ -19,65 +19,103 @@ import com.example.android.hiittimer.ui.edit.EditFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+import timber.log.Timber;
+
+// TODO preference を変更する機能を追加
+// TODO login機能を追加
 
 public class MainActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
-
-    public static final String ASSET_KEY = "asset";
+    public static final String ASSET_KEY = "getAssetById";
+    private static final int RC_SIGN_IN = 1;
 
     private AdView mAdView;
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private MainActivityViewModel mViewModel;
+    private View view;
+    private GoogleSignInAccount account;
+    private GoogleSignInOptions gso;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.i("onCreate");
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, BuildConfig.adMobKey);
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        mToolbar.setTitle(R.string.app_name);
-
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mViewPager = findViewById(R.id.view_pager);
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setAdapter(adapter);
-
-        mTabLayout = findViewById(R.id.tabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
-
+        view = findViewById(R.id.main_activity_view);
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        setUpSharedPreferences();
+        initializeAdView();
+        initializeToolbar();
+        initializeViewPager();
+        initializeEvent();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Timber.i("onResume");
+    }
+
+    private void initializeEvent() {
         mViewModel.getOpenDetailEvent().observed(this, this::startDetailActivity);
         mViewModel.getNewAssetEvent().observed(this, aVoid -> addNewAsset());
         mViewModel.getOpenTimerActivity().observed(this, this::startTimerActivity);
+    }
 
-        setUpSharedPreferences();
+    private void initializeViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),id);
+        mViewPager = findViewById(R.id.view_pager);
+        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setAdapter(adapter);
+        mTabLayout = findViewById(R.id.tabLayout);
+        mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    private void initializeAdView() {
+        MobileAds.initialize(this, BuildConfig.adMobKey);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
+
+    private void initializeToolbar() {
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setTitle(R.string.app_name);
     }
 
     private void setUpSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        int id = sharedPreferences.getInt("id", 1);
-        mViewModel.asset(id).observe(this,
-                asset ->
-                {
-                    mViewModel.setMutableAsset(asset);
-                    mViewModel.setAsset(asset);
-                }
-        );
+        id = sharedPreferences.getInt("id", 1);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Timber.i("onStart");
+        account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
     @Override
@@ -88,18 +126,80 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Timber.i("On prepare Options menu");
+        if (account != null){
+            MenuItem settingsItem = menu.findItem(R.id.login);
+            CreateMenuAsyncTask createMenuAsyncTask = new CreateMenuAsyncTask(this,settingsItem);
+            createMenuAsyncTask.execute(account.getPhotoUrl());
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        Timber.i("onCreateOptionsMenu");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.login:
-                Toast.makeText(this, "login", Toast.LENGTH_SHORT).show();
+            case R.id.login: {
+                if (GoogleSignIn.getLastSignedInAccount(this) == null) {
+                    signIn(getGoogleSignInClient());
+                } else {
+                    signOut(getGoogleSignInClient());
+                }
+            }
+
         }
         return false;
+    }
+
+    private GoogleSignInClient getGoogleSignInClient(){
+        if(gso == null){
+            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestScopes(Fitness.SCOPE_ACTIVITY_READ_WRITE)
+                    .build();
+        }
+        return GoogleSignIn.getClient(this,gso);
+    }
+
+    private void signIn(GoogleSignInClient client) {
+        Intent intent = client.getSignInIntent();
+        startActivityForResult(intent, RC_SIGN_IN);
+    }
+
+    private void signOut(GoogleSignInClient client){
+        client.revokeAccess().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                account =  null;
+                invalidateOptionsMenu();
+                Snackbar.make(view, "Revoked", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            account = completedTask.getResult(ApiException.class);
+            invalidateOptionsMenu();
+        } catch (ApiException e) {
+            Timber.w("signInResult: failed code=%s", e.getStatusCode());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
     }
 
     public void startDetailActivity(Asset asset) {
