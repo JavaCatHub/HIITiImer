@@ -70,7 +70,5 @@ public class DetailFragment extends Fragment {
             binding.setAsset(asset);
             requireActivity().invalidateOptionsMenu();
         });
-
-
     }
 }

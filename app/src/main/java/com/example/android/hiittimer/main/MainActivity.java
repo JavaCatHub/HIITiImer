@@ -1,9 +1,7 @@
 package com.example.android.hiittimer.main;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,12 +34,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
-// TODO preference を変更する機能を追加
-// TODO login機能を追加
-// TODO workout fragment 画面でデータベースに何もなかった時のケース
+// TODO 1 2かい起動するの阻止
+// TODO 2 途中でTimerActivityをバックボタンするときにデータを残せないとダイアログで表示する
+// TODO 3 databaseの中身を表示するwidgetを作成
+// TODO 4 workout fragment 画面でデータベースに何もなかった時のtextを表示する
+// TODO 5 新しくmenuを作成したらそれをデフォルトに設定する
+// TODO 6 timer の最後にinterval　が入らないようにする。
+// TODO 7 データを保存するときのエッジケース
+// TODO 8 文字を入力した後にキーボードを隠すようにする
 
-public class MainActivity extends AppCompatActivity implements
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity{
     public static final String ASSET_KEY = "getAssetById";
     private static final int RC_SIGN_IN = 1;
 
@@ -53,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements
     private View view;
     private GoogleSignInAccount account;
     private GoogleSignInOptions gso;
-    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements
 
         view = findViewById(R.id.main_activity_view);
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        setUpSharedPreferences();
         initializeAdView();
         initializeToolbar();
         initializeViewPager();
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initializeViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),id);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager = findViewById(R.id.view_pager);
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(adapter);
@@ -104,24 +104,11 @@ public class MainActivity extends AppCompatActivity implements
         mToolbar.setTitle(R.string.app_name);
     }
 
-    private void setUpSharedPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        id = sharedPreferences.getInt("Default Asset", 1);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
         Timber.i("onStart");
         account = GoogleSignIn.getLastSignedInAccount(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -214,12 +201,5 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(EditFragment.ARG_EDIT_KEY, true);
         startActivity(intent);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("Default Asset")) {
-            mViewModel.setAssetId(sharedPreferences.getInt(key,1));
-        }
     }
 }

@@ -48,11 +48,13 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.select);
-        if (viewModel.getAsset() != null && viewModel.getAsset().isDefault()) {
-            item.setIcon(R.drawable.ic_bookmark_white_24dp);
-        } else {
-            item.setIcon(R.drawable.ic_bookmark_border_white_24dp);
+        if (viewModel.getAsset() != null){
+            MenuItem item = menu.findItem(R.id.select);
+            if (viewModel.getAsset().isDefault()) {
+                item.setIcon(R.drawable.ic_bookmark_white_24dp);
+            } else {
+                item.setIcon(R.drawable.ic_bookmark_border_white_24dp);
+            }
         }
         return super.onPrepareOptionsMenu(menu);
     }

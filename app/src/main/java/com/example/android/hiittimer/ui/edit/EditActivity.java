@@ -7,6 +7,7 @@ import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.EditActivityBinding;
 import com.google.android.gms.ads.AdRequest;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -31,10 +32,21 @@ public class EditActivity extends AppCompatActivity {
         ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
                 fragment, R.id.contentFrame);
 
-        binding.fabSave.setOnClickListener(v ->{
-                viewModel.getSaveLiveData().call();
-                finish();
+        binding.fabSave.setOnClickListener(v -> {
+            viewModel.getSaveLiveData().call();
+            finish();
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Are you sure you want to discard this edit?")
+                .setPositiveButton("Continue", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Discard", (dialog, which) -> {
+                    dialog.dismiss();
+                    finish();
+                }).show();
     }
 
     private EditFragment findOrCreateFragment() {

@@ -19,7 +19,6 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private final Repository repository;
     private CompositeDisposable disposable;
-    private MutableLiveData<Integer> assetId = new MutableLiveData<>();
     private Asset mAsset;
     private NavigateLiveData<Asset> mOpenDetailEvent = new NavigateLiveData<>();
     private NavigateLiveData<Void> mOpenEditEvent = new NavigateLiveData<>();
@@ -31,13 +30,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         this.disposable = new CompositeDisposable();
     }
 
-
     public LiveData<List<Asset>> startLocal() {
         return repository.getAssets();
-    }
-
-    public LiveData<Asset> getAssetById(int id) {
-        return repository.getAsset(id);
     }
 
     public LiveData<List<Asset>> getAssetList(){return repository.getAssets();}
@@ -56,14 +50,6 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void setAsset(Asset asset) {
         this.mAsset = asset;
-    }
-
-    public LiveData<Integer> getAssetId() {
-        return assetId;
-    }
-
-    public void setAssetId(int assetId) {
-        this.assetId.setValue(assetId);
     }
 
     public NavigateLiveData<Asset> getOpenDetailEvent() {

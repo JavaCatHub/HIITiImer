@@ -9,18 +9,16 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private String[] tabTitles = {"Work out", "Assets"};
-    private int id;
 
-    public ViewPagerAdapter(FragmentManager fm, int id) {
+    public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.id = id;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return WorkoutFragment.newInstance(id);
+                return new WorkoutFragment();
             case 1:
                 return new AssetsFragment();
             default:

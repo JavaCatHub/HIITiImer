@@ -55,6 +55,8 @@ public class EditFragment extends Fragment {
         mViewModel.getSaveLiveData().observed(this, view -> saveAsset());
     }
 
+
+
     private void showFragmentDialog(TextView textView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = this.getLayoutInflater();

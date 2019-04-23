@@ -25,18 +25,8 @@ public class WorkoutFragment extends Fragment {
 
     private FragmentWorkoutBinding binding;
     private MainActivityViewModel mViewModel;
-    private static final String ASSET_KEY = "key";
 
     public WorkoutFragment() {
-    }
-
-    public static WorkoutFragment newInstance(int id) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(ASSET_KEY, id);
-        WorkoutFragment fragment = new WorkoutFragment();
-        fragment.setArguments(bundle);
-
-        return fragment;
     }
 
     @Override
@@ -51,6 +41,8 @@ public class WorkoutFragment extends Fragment {
         return binding.getRoot();
     }
 
+
+    //2かい起動してしまうの修正
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -58,13 +50,13 @@ public class WorkoutFragment extends Fragment {
 
         mViewModel.getDefaultAsset().observe(this, asset -> {
             Timber.i("On get Default Asset");
-            if (asset != null){
+            if (asset != null) {
                 binding.workOutFragment.setVisibility(View.VISIBLE);
                 binding.setAsset(asset);
                 mViewModel.setAsset(asset);
-            }else{
+            } else {
                 binding.workOutFragment.setVisibility(View.INVISIBLE);
-                Snackbar.make(binding.workOutFragment,"Choose or Create Asset", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.workOutFragment, "Choose or Create Asset", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -81,14 +73,7 @@ public class WorkoutFragment extends Fragment {
 
             builder.setItems(array, (dialog, which) -> {
                 dialog.dismiss();
-                mViewModel.updateDefaultAsset(
-                        false,
-                        mViewModel.getAsset().getId()
-                );
-                mViewModel.updateDefaultAsset(
-                        true,
-                        assets.get(which).getId()
-                );
+                mViewModel.updateDefaultAsset(true, assets.get(which).getId());
             });
         });
 
