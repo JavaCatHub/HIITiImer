@@ -8,9 +8,14 @@
 
         <variable
             name="asset"
-            type="com.example.android.hiittimer.model.Asset"/>
+            type="com.example.android.hiittimer.model.Asset" />
+
+        <variable
+            name="viewModel"
+            type="com.example.android.hiittimer.ui.edit.EditViewModel" />
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/edit"
         android:layout_width="match_parent"
@@ -25,7 +30,9 @@
             android:hint="@string/enter_the_title"
             android:inputType="text"
             android:maxLines="1"
-            android:text="@{asset.title}"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:text="@={viewModel.title}"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,12 +54,12 @@
         <include
             android:id="@+id/include"
             layout="@layout/asset_layout"
-            bind:included="@{asset}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
-            app:layout_constraintTop_toBottomOf="@+id/add_asset_title" />
+            app:layout_constraintTop_toBottomOf="@+id/add_asset_title"
+            bind:included="@{asset}" />
 
         <TextView
             android:id="@+id/comment"
@@ -64,16 +71,18 @@
             app:layout_constraintTop_toBottomOf="@+id/include" />
 
         <EditText
-            android:gravity="start"
             android:id="@+id/add_asset_comment"
             style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:hint="@string/enter_the_comment_about_this_asset"
             android:inputType="textMultiLine"
-            android:maxLength="1000"
             android:lines="10"
-            android:text="@{asset.comment}"
+            android:maxLength="1000"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:text="@={viewModel.comment}"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/comment" />
     </androidx.constraintlayout.widget.ConstraintLayout>

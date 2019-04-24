@@ -1,10 +1,12 @@
 package com.example.android.hiittimer.detail;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import timber.log.Timber;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -70,9 +72,17 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete: {
-                viewModel.delete();
-                finish();
-                return true;
+                new AlertDialog.Builder(this)
+                        .setTitle("Are you sure you want to delete this asset?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            dialog.dismiss();
+                            viewModel.delete();
+                            finish();
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            dialog.dismiss();
+                        }).show();
+                break;
             }
             case R.id.select: {
                 if (viewModel.getAsset().isDefault()) {

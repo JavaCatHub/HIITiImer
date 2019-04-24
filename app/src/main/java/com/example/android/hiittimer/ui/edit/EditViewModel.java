@@ -8,6 +8,7 @@ import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.repository.Repository;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.InverseMethod;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +19,10 @@ public class EditViewModel extends AndroidViewModel {
     private boolean mIsNewAsset;
 
     private int mAssetId;
+
+    private MutableLiveData<String> title = new MutableLiveData<>();
+
+    private MutableLiveData<String> comment = new MutableLiveData<>();
 
     private NavigateLiveData<Void> save = new NavigateLiveData<>();
 
@@ -56,4 +61,20 @@ public class EditViewModel extends AndroidViewModel {
     }
 
     private void updateAsset(Asset asset){repository.updateAsset(asset);}
+
+    public MutableLiveData<String> getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title.setValue(title);
+    }
+
+    public MutableLiveData<String> getComment(){
+        return comment;
+    }
+
+    public void setComment(String comment){
+        this.comment.setValue(comment);
+    }
 }

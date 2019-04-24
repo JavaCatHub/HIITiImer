@@ -1,22 +1,33 @@
 package com.example.android.hiittimer.ui.edit;
 
 import android.os.Bundle;
-
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.example.android.hiittimer.ActivityUtils;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.EditActivityBinding;
 import com.google.android.gms.ads.AdRequest;
-
+import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import timber.log.Timber;
 
 public class EditActivity extends AppCompatActivity {
 
     private EditActivityBinding binding;
 
     private EditViewModel viewModel;
+
+    private static final int OVER_CHARACTER = 111;
+
+    private static final int EMPTY_TITLE = 222;
+
+    private static final int OVER_THOUSAND = 333;
+
+    private static final int OK = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +42,46 @@ public class EditActivity extends AppCompatActivity {
 
         ActivityUtils.replaceFragmentInActivity(getSupportFragmentManager(),
                 fragment, R.id.contentFrame);
+    }
 
-        binding.fabSave.setOnClickListener(v -> {
-            viewModel.getSaveLiveData().call();
-            finish();
-        });
+    private void onSave() {
+        switch (checkAsset()) {
+            case OK: {
+                viewModel.getSaveLiveData().call();
+                finish();
+                break;
+            }
+            case EMPTY_TITLE: {
+                showSnackBar("Please enter the title.");
+                break;
+            }
+            case OVER_CHARACTER: {
+                showSnackBar("Please make the title 20 characters or less.");
+                break;
+            }
+            case OVER_THOUSAND: {
+                showSnackBar("Please make the comment 1000 characters or less");
+            }
+            default: {
+                Timber.i("Something wrong on check title");
+            }
+        }
+    }
+
+    private int checkAsset() {
+        if (TextUtils.isEmpty(viewModel.getTitle().getValue())) {
+            return EMPTY_TITLE;
+        } else if (viewModel.getTitle().getValue().length() > 20) {
+            return OVER_CHARACTER;
+        } else if (TextUtils.isEmpty(viewModel.getComment().getValue()) && viewModel.getComment().getValue().length() > 1000) {
+            return OVER_THOUSAND;
+        } else {
+            return OK;
+        }
+    }
+
+    private void showSnackBar(String text) {
+        Snackbar.make(binding.contentFrame, text, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -63,9 +109,21 @@ public class EditActivity extends AppCompatActivity {
                     getIntent().getBooleanExtra(EditFragment.ARG_EDIT_KEY, false));
             fragment.setArguments(bundle);
         }
-
         return fragment;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.save) {
+            onSave();
+        }
+        return true;
+    }
 }

@@ -41,8 +41,6 @@ import timber.log.Timber;
 // TODO 4 workout fragment 画面でデータベースに何もなかった時のtextを表示する
 // TODO 5 新しくmenuを作成したらそれをデフォルトに設定する
 // TODO 6 timer の最後にinterval　が入らないようにする。
-// TODO 7 データを保存するときのエッジケース
-// TODO 8 文字を入力した後にキーボードを隠すようにする
 
 public class MainActivity extends AppCompatActivity {
     public static final String ASSET_KEY = "getAssetById";

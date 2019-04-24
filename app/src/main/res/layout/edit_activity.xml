@@ -45,15 +45,6 @@
                     tools:context=".ui.edit.EditActivity" />
 
             </androidx.core.widget.NestedScrollView>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_save"
-                style="@style/Widget.MaterialComponents.FloatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_save_black_24dp" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>

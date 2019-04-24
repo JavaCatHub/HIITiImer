@@ -50,11 +50,12 @@ public class EditFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(EditViewModel.class);
+        binding.setLifecycleOwner(this);
         initViews();
         onClickListener();
         mViewModel.getSaveLiveData().observed(this, view -> saveAsset());
+        binding.setViewModel(mViewModel);
     }
-
 
 
     private void showFragmentDialog(TextView textView) {
@@ -92,10 +93,16 @@ public class EditFragment extends Fragment {
                 Asset defaultAsset = new Asset();
                 defaultAsset.setDefaultMyself();
                 binding.setAsset(defaultAsset);
+                mViewModel.setTitle(defaultAsset.getTitle());
+                mViewModel.setComment(defaultAsset.getComment());
             } else {
                 mViewModel.setIsNewAsset(false);
                 mViewModel.setAssetId(getArguments().getInt(ARG_EDIT_ASSET_ID, 0));
-                mViewModel.start().observe(this, asset -> binding.setAsset(asset));
+                mViewModel.start().observe(this, asset -> {
+                    binding.setAsset(asset);
+                    mViewModel.setTitle(asset.getTitle());
+                    mViewModel.setComment(asset.getComment());
+                });
             }
         }
     }

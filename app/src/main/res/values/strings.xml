@@ -40,6 +40,7 @@
     <string name="select">select</string>
     <string name="select_asset">Select Asset</string>
     <string name="create_new_asset">Create new Asset</string>
+    <string name="save">save</string>
 
 
 </resources>
