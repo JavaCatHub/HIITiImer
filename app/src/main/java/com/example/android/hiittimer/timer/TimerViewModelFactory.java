@@ -16,16 +16,19 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
     private List<CountDown> timerList = new ArrayList<>();
 
+    private Asset asset;
+
     private final long interval = 500;
 
     public TimerViewModelFactory(Asset asset) {
+        this.asset = asset;
         prepareCountDownSet(asset);
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new TimerViewModel(timerList);
+        return (T) new TimerViewModel(timerList, asset);
     }
 
 

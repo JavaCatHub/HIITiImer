@@ -56,7 +56,7 @@ public class LocalDataSource {
 
                     @Override
                     public void onComplete() {
-                        Timber.tag(TAG).d("complete");
+                        Timber.i("complete");
                     }
 
                     @Override
@@ -75,11 +75,15 @@ public class LocalDataSource {
     }
 
     public void updateDefaultAsset(boolean status, int id) {
-        Completable.fromAction(mAssetDAO::setTrueToFalse)
+        Completable.fromAction(() -> {
+            mAssetDAO.setTrueToFalse();
+            Timber.i("onSetTrueToFalse");
+        })
                 .concatWith(new Completable() {
                     @Override
                     protected void subscribeActual(CompletableObserver observer) {
                         mAssetDAO.updateDefaultAsset(status, id);
+                        Timber.i("onConcat");
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -87,23 +91,23 @@ public class LocalDataSource {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        Timber.i("onSubscribed");
                     }
 
                     @Override
                     public void onComplete() {
-                        Timber.tag(TAG).d("complete");
+                        Timber.i("complete");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.tag(TAG).e(e);
+                        Timber.e(e);
                     }
                 });
     }
 
     public void setTrueToFalse() {
-        completable(() -> mAssetDAO.setTrueToFalse());
+        completable(mAssetDAO::setTrueToFalse);
     }
 
     public void deleteAsset(int id) {

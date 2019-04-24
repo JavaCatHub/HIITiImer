@@ -1,7 +1,5 @@
 package com.example.android.hiittimer.main;
 
-import com.example.android.hiittimer.model.Asset;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

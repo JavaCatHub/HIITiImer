@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.android.hiittimer.BuildConfig;
 import com.example.android.hiittimer.CreateMenuAsyncTask;
+import com.example.android.hiittimer.databinding.ActivityMainBinding;
 import com.example.android.hiittimer.detail.DetailActivity;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
@@ -30,12 +31,12 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
-// TODO 1 2かい起動するの阻止
-// TODO 2 途中でTimerActivityをバックボタンするときにデータを残せないとダイアログで表示する
+// TODO DetailActivityでmenuのお気に入りかどうかはバックするときに確認する
 // TODO 3 databaseの中身を表示するwidgetを作成
 // TODO 4 workout fragment 画面でデータベースに何もなかった時のtextを表示する
 // TODO 5 新しくmenuを作成したらそれをデフォルトに設定する
@@ -43,16 +44,16 @@ import timber.log.Timber;
 // TODO 7 データを保存するときのエッジケース
 // TODO 8 文字を入力した後にキーボードを隠すようにする
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     public static final String ASSET_KEY = "getAssetById";
     private static final int RC_SIGN_IN = 1;
 
+    private ActivityMainBinding binding;
     private AdView mAdView;
     private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private MainActivityViewModel mViewModel;
-    private View view;
     private GoogleSignInAccount account;
     private GoogleSignInOptions gso;
 
@@ -60,9 +61,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Timber.i("onCreate");
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        view = findViewById(R.id.main_activity_view);
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         initializeAdView();
         initializeToolbar();
@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Timber.i("On prepare Options menu");
-        if (account != null){
+        if (account != null) {
             MenuItem settingsItem = menu.findItem(R.id.login);
-            CreateMenuAsyncTask createMenuAsyncTask = new CreateMenuAsyncTask(this,settingsItem);
+            CreateMenuAsyncTask createMenuAsyncTask = new CreateMenuAsyncTask(this, settingsItem);
             createMenuAsyncTask.execute(account.getPhotoUrl());
         }
         return super.onPrepareOptionsMenu(menu);
@@ -139,19 +139,18 @@ public class MainActivity extends AppCompatActivity{
                     signOut(getGoogleSignInClient());
                 }
             }
-
         }
         return false;
     }
 
-    private GoogleSignInClient getGoogleSignInClient(){
-        if(gso == null){
+    private GoogleSignInClient getGoogleSignInClient() {
+        if (gso == null) {
             gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .requestScopes(Fitness.SCOPE_ACTIVITY_READ_WRITE)
                     .build();
         }
-        return GoogleSignIn.getClient(this,gso);
+        return GoogleSignIn.getClient(this, gso);
     }
 
     private void signIn(GoogleSignInClient client) {
@@ -159,11 +158,11 @@ public class MainActivity extends AppCompatActivity{
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
-    private void signOut(GoogleSignInClient client){
+    private void signOut(GoogleSignInClient client) {
         client.revokeAccess().addOnCompleteListener(this, task -> {
-            account =  null;
+            account = null;
             invalidateOptionsMenu();
-            Snackbar.make(view, "Revoked", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(binding.mainActivityView, "Revoked", Snackbar.LENGTH_SHORT).show();
         });
     }
 
