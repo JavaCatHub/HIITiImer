@@ -24,6 +24,9 @@ public interface AssetDAO {
     @Query("DELETE FROM asset WHERE _id = :id")
     void deleteAsset(int id);
 
+    @Query("SELECT * FROM asset ORDER BY _id")
+    List<Asset> getExistWidget();
+
     @Query("SELECT * FROM asset WHERE isDefault = 1")
     LiveData<Asset> getDefaultAsset();
 

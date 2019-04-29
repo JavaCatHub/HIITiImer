@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.example.android.hiittimer.ActivityUtils;
+import com.example.android.hiittimer.HIITWidgetProvider;
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.databinding.EditActivityBinding;
 import com.google.android.gms.ads.AdRequest;
@@ -48,6 +49,7 @@ public class EditActivity extends AppCompatActivity {
         switch (checkAsset()) {
             case OK: {
                 viewModel.getSaveLiveData().call();
+                HIITWidgetProvider.sendRefreshBroadcast(this);
                 finish();
                 break;
             }

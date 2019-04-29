@@ -41,6 +41,9 @@
     <string name="select_asset">Select Asset</string>
     <string name="create_new_asset">Create new Asset</string>
     <string name="save">save</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="no_local_data">No local data</string>
 
 
 </resources>

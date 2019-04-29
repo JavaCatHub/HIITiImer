@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.android.hiittimer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -12,6 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service android:name=".ListWidgetService"
+            android:permission="android:permission.BIND_REMOTEVIEWS"
+            />
+
+        <receiver android:name=".HIITWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/hiitwidget_provider_info" />
+        </receiver>
+
         <activity android:name=".ui.edit.EditActivity" />
         <activity android:name=".detail.DetailActivity" />
         <activity android:name=".timer.TimerActivity" />

@@ -1,5 +1,8 @@
 package com.example.android.hiittimer.repository.localdatasource;
 
+import android.appwidget.AppWidgetManager;
+
+import com.example.android.hiittimer.HIITWidgetProvider;
 import com.example.android.hiittimer.model.Asset;
 
 import java.util.List;
