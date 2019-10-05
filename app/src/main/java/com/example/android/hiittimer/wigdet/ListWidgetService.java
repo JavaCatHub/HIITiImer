@@ -1,10 +1,11 @@
-package com.example.android.hiittimer;
+package com.example.android.hiittimer.wigdet;
 
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.repository.localdatasource.AppDatabase;
 
@@ -54,13 +55,12 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int position) {
-
         Timber.i("ListWidgetService: getViewAt");
         Asset asset = assetList.get(position);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_item);
         views.setTextViewText(R.id.title, asset.getTitle());
-        views.setTextViewText(R.id.time, asset.getStringPrepare());
+        views.setTextViewText(R.id.total_time, asset.getStringTotalTime());
 
         return views;
     }

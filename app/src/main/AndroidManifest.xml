@@ -13,11 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".ListWidgetService"
-            android:permission="android:permission.BIND_REMOTEVIEWS"
-            />
+        <service android:name=".wigdet.HIITService" />
+        <service
+            android:name=".wigdet.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name=".HIITWidgetProvider">
+        <receiver android:name=".wigdet.HIITWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

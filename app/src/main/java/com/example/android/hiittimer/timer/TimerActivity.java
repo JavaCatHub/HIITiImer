@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.android.hiittimer.R;
+import com.example.android.hiittimer.Sound;
 import com.example.android.hiittimer.databinding.ActivityTimerBinding;
 import com.example.android.hiittimer.main.MainActivity;
 import com.example.android.hiittimer.model.CountDown;
@@ -32,6 +33,8 @@ public class TimerActivity extends AppCompatActivity {
 
     private CountDown count;
 
+    private Sound sound;
+
     private final long interval = 1000;
 
     private boolean current = false;
@@ -46,6 +49,7 @@ public class TimerActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timer);
 
         initializeViewModel();
+        sound = new Sound(this);
 
         binding.play.setSelected(false);
         binding.setViewModel(mViewModel);
@@ -72,8 +76,10 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (hasFitnessPermissions()) {
+            Timber.i("hasPermissions");
             initializeAlertDialog(this);
         } else {
+            Timber.i("has'tPermissions");
             count.cancel();
             finish();
         }
@@ -113,8 +119,8 @@ public class TimerActivity extends AppCompatActivity {
 
     private void setTexts(CountDown c) {
         binding.current.setText(c.getTitle());
-        binding.set.setText(String.valueOf(c.getSet()));
-        binding.cycle.setText(String.valueOf(c.getCycle()));
+        binding.currentSetCount.setText(String.valueOf(c.getSet()));
+        binding.currentCycleCount.setText(String.valueOf(c.getCycle()));
     }
 
     private void message() {
@@ -125,7 +131,17 @@ public class TimerActivity extends AppCompatActivity {
         return new CountDown.ClockInterface() {
             @Override
             public void onTickTextView(long millisUntilFinished) {
-                binding.timer.setText(dateFormat.format(millisUntilFinished + 1000));
+                if (millisUntilFinished < 4000 && millisUntilFinished >= 3000) {
+                    sound.playBell();
+                    Timber.i("ring3");
+                }else if (millisUntilFinished < 3000 && millisUntilFinished >= 2000){
+                    sound.playBell();
+                    Timber.i("ring2");
+                }else if (millisUntilFinished < 2000 && millisUntilFinished >= 1000){
+                    sound.playBell();
+                    Timber.i("ring1");
+                }
+                binding.timer.setText(dateFormat.format(Math.round((double) millisUntilFinished)));
                 Timber.d("%s", millisUntilFinished);
                 Timber.d("%s", Math.round((double) millisUntilFinished / 1000));
                 countMills = millisUntilFinished;

@@ -38,9 +38,7 @@ import timber.log.Timber;
 
 // TODO DetailActivityでmenuのお気に入りかどうかはバックするときに確認する
 // TODO 3 databaseの中身を表示するwidgetを作成
-// TODO 4 workout fragment 画面でデータベースに何もなかった時のtextを表示する
 // TODO 5 新しくmenuを作成したらそれをデフォルトに設定する
-// TODO 6 timer の最後にinterval　が入らないようにする。
 
 public class MainActivity extends AppCompatActivity {
     public static final String ASSET_KEY = "getAssetById";

@@ -18,7 +18,7 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
     private Asset asset;
 
-    private final long interval = 500;
+    private final long interval = 1000;
 
     public TimerViewModelFactory(Asset asset) {
         this.asset = asset;
@@ -37,12 +37,17 @@ public class TimerViewModelFactory extends ViewModelProvider.NewInstanceFactory 
                 new CountDown(asset.getPrepare(), interval, "Prepare", asset.getSet(), asset.getCycle())
         );
 
+        /*
+         i = set
+         j = cycle
+         */
         for (int i = asset.getSet(); i > 0; i--) {
             for (int j = asset.getCycle(); j > 0; j--) {
                 timerList.add(new CountDown(asset.getWorkOut(), interval, "Workout", i, j));
                 timerList.add(new CountDown(asset.getInterval(), interval, "Interval", i, j));
             }
-            timerList.add(new CountDown(asset.getCoolDown(), interval, "Cool down", i, asset.getCycle()));
+            timerList.remove(timerList.size() - 1);
+            timerList.add(new CountDown(asset.getCoolDown(), interval, "Cool down", i, 0));
         }
         timerList.remove(timerList.size() - 1);
         Timber.i(timerList.toString());

@@ -1,28 +1,15 @@
 package com.example.android.hiittimer.repository.localdatasource;
 
-import android.appwidget.AppWidgetManager;
-
-import com.example.android.hiittimer.HIITWidgetProvider;
 import com.example.android.hiittimer.model.Asset;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import androidx.lifecycle.LiveData;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
-import io.reactivex.Emitter;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.internal.fuseable.ScalarCallable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 

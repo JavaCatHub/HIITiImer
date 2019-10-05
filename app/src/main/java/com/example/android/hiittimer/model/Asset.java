@@ -22,32 +22,32 @@ public class Asset implements Parcelable {
     private String comment;
     private boolean isDefault;
 
-    public String getStringPrepare(){
-       return String.valueOf(prepare/1000);
+    public String getStringPrepare() {
+        return String.valueOf(prepare / 1000);
     }
 
-    public String getStringWorkout(){
-        return String.valueOf(workOut/1000);
+    public String getStringWorkout() {
+        return String.valueOf(workOut / 1000);
     }
 
-    public String getStringInterval(){
-        return String.valueOf(interval/1000);
+    public String getStringInterval() {
+        return String.valueOf(interval / 1000);
     }
 
-    public String getStringCoolDown(){
-        return String.valueOf(coolDown/1000);
+    public String getStringCoolDown() {
+        return String.valueOf(coolDown / 1000);
     }
 
-    public String getStringCycle(){
+    public String getStringCycle() {
         return String.valueOf(cycle);
     }
 
-    public String getStringSet(){
+    public String getStringSet() {
         return String.valueOf(set);
     }
 
-    public String getStringTotalTime(){
-        return String.valueOf(totalTime/1000);
+    public String getStringTotalTime() {
+        return String.valueOf(totalTime / 1000);
     }
 
     public int getId() {
@@ -139,11 +139,11 @@ public class Asset implements Parcelable {
     }
 
     public long calculateTotalTime() {
-        this.totalTime = (this.workOut + this.interval) * this.cycle * this.set + this.coolDown * (this.set - 1) + this.prepare;
+        this.totalTime = ((this.workOut + this.interval) * this.cycle - this.interval * this.set) * this.set + this.coolDown * (this.set - 1) + this.prepare;
         return totalTime;
     }
 
-    public void setDefaultMyself(){
+    public void setDefaultMyself() {
         setTitle("Default");
         setPrepare(10000);
         setWorkOut(20000);
@@ -156,7 +156,7 @@ public class Asset implements Parcelable {
         setDefault(true);
     }
 
-    public static Asset populateAsset(){
+    public static Asset populateAsset() {
         Asset defaultAsset = new Asset();
         defaultAsset.setDefaultMyself();
         return defaultAsset;

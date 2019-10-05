@@ -2,15 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
 
-    <ListView
+    <GridView
         android:id="@+id/widget_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/widget_margin"
         tools:listitem="@layout/widget_item" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:text="empty"
+        android:layout_margin="@dimen/widget_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -13,7 +13,6 @@ import androidx.lifecycle.LiveData;
 public class Repository {
 
     private LocalDataSource mLocalDataSource;
-    private static final String TAG = Repository.class.getSimpleName();
 
     public Repository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);

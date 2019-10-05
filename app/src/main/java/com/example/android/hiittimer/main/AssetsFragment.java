@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import timber.log.Timber;
 
@@ -19,6 +20,7 @@ import com.example.android.hiittimer.main.AssetsAdapter;
 import com.example.android.hiittimer.main.MainActivityViewModel;
 import com.example.android.hiittimer.model.Asset;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class AssetsFragment extends Fragment {
@@ -31,7 +33,6 @@ public class AssetsFragment extends Fragment {
     public AssetsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,12 +58,11 @@ public class AssetsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
-//        mViewModel.startLocal().observe(this, this::initView);
         binding.fab.setOnClickListener(v -> mViewModel.addNewAsset());
     }
 
     private void initView(List<Asset> list) {
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager manager = new GridLayoutManager(getActivity(),2);
 
         adapter = new AssetsAdapter(mViewModel);
         adapter.setAssetList(list);
