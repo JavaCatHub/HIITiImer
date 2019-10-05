@@ -27,12 +27,12 @@
             style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
             android:hint="@string/enter_the_title"
             android:inputType="text"
             android:maxLines="1"
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
-            android:text="@={viewModel.title}"
+            android:text="@={asset.title}"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,6 +63,7 @@
 
         <TextView
             android:id="@+id/comment"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -75,14 +76,14 @@
             style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
             android:gravity="start"
             android:hint="@string/enter_the_comment_about_this_asset"
             android:inputType="textMultiLine"
             android:lines="10"
             android:maxLength="1000"
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
-            android:text="@={viewModel.comment}"
+            android:text="@={asset.comment}"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/comment" />
     </androidx.constraintlayout.widget.ConstraintLayout>

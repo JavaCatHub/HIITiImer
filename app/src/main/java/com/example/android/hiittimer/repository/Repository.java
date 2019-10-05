@@ -10,6 +10,8 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
+import io.reactivex.Single;
+
 public class Repository {
 
     private LocalDataSource mLocalDataSource;
@@ -40,10 +42,12 @@ public class Repository {
     }
 
     public void updateDefaultAsset(boolean status, int id) {
-        mLocalDataSource.updateDefaultAsset(status,id);
+        mLocalDataSource.updateDefaultAsset(status, id);
     }
 
-    public void setTrueToFalse(){mLocalDataSource.setTrueToFalse();}
+    public void setTrueToFalse() {
+        mLocalDataSource.setTrueToFalse();
+    }
 
     public void deleteAsset(int id) {
         mLocalDataSource.deleteAsset(id);

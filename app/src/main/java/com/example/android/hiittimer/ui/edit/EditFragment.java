@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import timber.log.Timber;
 
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.hiittimer.R;
+import com.example.android.hiittimer.ValueType;
 import com.example.android.hiittimer.databinding.EditFragmentBinding;
 import com.example.android.hiittimer.model.Asset;
 
@@ -57,10 +59,18 @@ public class EditFragment extends Fragment {
         binding.setViewModel(mViewModel);
     }
 
-    private void showFragmentDialog(TextView textView) {
+    private void showFragmentDialog(ValueType valueType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_timer, null);
+
+        Asset asset;
+        if (isCheckAssetNotNull(mViewModel.getAsset().getValue())) {
+            asset = mViewModel.getAsset().getValue();
+        } else {
+            asset = new Asset();
+            asset.setDefaultMyself();
+        }
 
         NumberPicker numSec = view.findViewById(R.id.numberPickerSec);
         initNumberPicker(numSec);
@@ -73,8 +83,27 @@ public class EditFragment extends Fragment {
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     int min = numMin.getValue() * 60;
                     int sec = numSec.getValue();
-                    if (isCheck(min, sec)) {
-                        textView.setText(String.valueOf(min + sec));
+                    if (isCheckAtLeastOneOrMore(min, sec)) {
+                        int sum = (min + sec) * 1000;
+                        switch (valueType) {
+                            case PREPARE: {
+                                asset.setPrepare(sum);
+                                break;
+                            }
+                            case WORKOUT: {
+                                asset.setWorkOut(sum);
+                                break;
+                            }
+                            case INTERVAL: {
+                                asset.setInterval(sum);
+                                break;
+                            }
+                            case COOL_DOWN: {
+                                asset.setCoolDown(sum);
+                                break;
+                            }
+                        }
+                        mViewModel.setAsset(asset);
                     } else {
                         Toast.makeText(getActivity(), "Please enter at least one second.", Toast.LENGTH_SHORT).show();
                         Timber.d("error value");
@@ -85,10 +114,18 @@ public class EditFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void showPickerDialog(TextView textView){
+    private void showPickerDialog(ValueType valueType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_count,null);
+        View view = inflater.inflate(R.layout.dialog_count, null);
+        Asset asset;
+
+        if (isCheckAssetNotNull(mViewModel.getAsset().getValue())) {
+            asset = mViewModel.getAsset().getValue();
+        } else {
+            asset = new Asset();
+            asset.setDefaultMyself();
+        }
 
         NumberPicker count = view.findViewById(R.id.numberPickerCount);
         count.setMinValue(1);
@@ -96,48 +133,61 @@ public class EditFragment extends Fragment {
 
         builder.setTitle(R.string.pick_a_count)
                 .setView(view)
-                .setPositiveButton(R.string.ok,(dialog, which) -> {
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
                     int x = count.getValue();
-                    if(x != 0){
-                        textView.setText(String.valueOf(x));
-                    } else{
-                        Toast.makeText(getActivity(),"Please enter at least one or more times.",Toast.LENGTH_SHORT).show();
+                    if (x != 0) {
+                        switch (valueType) {
+                            case CYCLE: {
+                                asset.setCycle(x);
+                                break;
+                            }
+                            case SET: {
+                                asset.setSet(x);
+                                break;
+                            }
+                        }
+                        mViewModel.setAsset(asset);
+                    } else {
+                        Toast.makeText(getActivity(), "Please enter at least one or more times.", Toast.LENGTH_SHORT).show();
                         Timber.d("error value");
                     }
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
     private void initViews() {
         if (getArguments() != null) {
             if (getArguments().getBoolean(ARG_EDIT_KEY)) {
                 mViewModel.setIsNewAsset(true);
-                Asset defaultAsset = new Asset();
-                defaultAsset.setDefaultMyself();
-                binding.setAsset(defaultAsset);
-                mViewModel.setTitle(defaultAsset.getTitle());
-                mViewModel.setComment(defaultAsset.getComment());
+                mViewModel.startNewAsset().observe(this,asset ->
+                {
+                    asset.calculateTotalTime();
+                    binding.setAsset(asset);
+                });
             } else {
                 mViewModel.setIsNewAsset(false);
                 mViewModel.setAssetId(getArguments().getInt(ARG_EDIT_ASSET_ID, 0));
-                mViewModel.start().observe(this, asset -> {
+                mViewModel.start().observe(this,asset -> {
+                    mViewModel.setAsset(asset);
+                });
+                mViewModel.getAsset().observe(this,asset -> {
+                    asset.calculateTotalTime();
                     binding.setAsset(asset);
-                    mViewModel.setTitle(asset.getTitle());
-                    mViewModel.setComment(asset.getComment());
                 });
             }
         }
     }
 
     private void onClickListener() {
-        binding.include.prepareTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
-        binding.include.workOutTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
-        binding.include.intervalTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
-        binding.include.coolDownTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
-        binding.include.setCount.setOnClickListener(v -> showPickerDialog((TextView) v));
-        binding.include.cycleCount.setOnClickListener(v -> showPickerDialog((TextView) v));
+        binding.include.prepareTime.setOnClickListener(v -> showFragmentDialog(ValueType.PREPARE));
+        binding.include.workOutTime.setOnClickListener(v -> showFragmentDialog(ValueType.WORKOUT));
+        binding.include.intervalTime.setOnClickListener(v -> showFragmentDialog(ValueType.INTERVAL));
+        binding.include.coolDownTime.setOnClickListener(v -> showFragmentDialog(ValueType.COOL_DOWN));
+        binding.include.setCount.setOnClickListener(v -> showPickerDialog(ValueType.SET));
+        binding.include.cycleCount.setOnClickListener(v -> showPickerDialog(ValueType.CYCLE));
     }
-
 
     private void initNumberPicker(NumberPicker numberPicker) {
         numberPicker.setMaxValue(59);
@@ -145,29 +195,15 @@ public class EditFragment extends Fragment {
         numberPicker.setFormatter(value -> String.format(Locale.US, "%02d", value));
     }
 
-    private boolean isCheck(int min, int sec) {
+    private boolean isCheckAtLeastOneOrMore(int min, int sec) {
         return min + sec != 0;
     }
 
+    private boolean isCheckAssetNotNull(Asset asset) {
+        return asset != null;
+    }
+
     private void saveAsset() {
-        Asset asset = new Asset();
-        asset.setTitle(binding.addAssetTitle.getText().toString());
-        asset.setPrepare(parseTextViewToLong(binding.include.prepareTime));
-        asset.setWorkOut(parseTextViewToLong(binding.include.workOutTime));
-        asset.setInterval(parseTextViewToLong(binding.include.intervalTime));
-        asset.setCoolDown(parseTextViewToLong(binding.include.coolDownTime));
-        asset.setCycle(parseTextViewToInt(binding.include.cycleCount));
-        asset.setSet(parseTextViewToInt(binding.include.setCount));
-        asset.setComment(binding.addAssetComment.getText().toString());
-        asset.calculateTotalTime();
-        mViewModel.saveAsset(asset);
-    }
-
-    private long parseTextViewToLong(TextView textView) {
-        return Long.parseLong(textView.getText().toString()) * 1000;
-    }
-
-    private int parseTextViewToInt(TextView textView) {
-        return Integer.parseInt(textView.getText().toString());
+        mViewModel.saveAsset(mViewModel.getAsset().getValue());
     }
 }

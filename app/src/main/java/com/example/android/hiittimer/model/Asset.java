@@ -139,7 +139,7 @@ public class Asset implements Parcelable {
     }
 
     public long calculateTotalTime() {
-        this.totalTime = ((this.workOut + this.interval) * this.cycle - this.interval * this.set) * this.set + this.coolDown * (this.set - 1) + this.prepare;
+        this.totalTime = this.prepare + (this.workOut * this.cycle + this.interval * (this.cycle - 1)) * this.set + this.coolDown * (this.set - 1);
         return totalTime;
     }
 

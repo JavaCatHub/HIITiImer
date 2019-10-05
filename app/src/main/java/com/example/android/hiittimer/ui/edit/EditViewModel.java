@@ -13,6 +13,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+
 public class EditViewModel extends AndroidViewModel {
     private Repository repository;
 
@@ -20,9 +23,7 @@ public class EditViewModel extends AndroidViewModel {
 
     private int mAssetId;
 
-    private MutableLiveData<String> title = new MutableLiveData<>();
-
-    private MutableLiveData<String> comment = new MutableLiveData<>();
+    private MutableLiveData<Asset> asset = new MutableLiveData<>();
 
     private NavigateLiveData<Void> save = new NavigateLiveData<>();
 
@@ -35,8 +36,43 @@ public class EditViewModel extends AndroidViewModel {
         this.mIsNewAsset = mIsNewAsset;
     }
 
-    public LiveData<Asset> start() {
-        return repository.getAsset(mAssetId);
+//    public LiveData<Asset> start() {
+//        if (mIsNewAsset){
+//            Asset defaultAsset = new Asset();
+//            defaultAsset.setDefaultMyself();
+//            setAsset(defaultAsset);
+//            repository.insertAndEditAsset(defaultAsset)
+//            .subscribe(new SingleObserver<Long>() {
+//                @Override
+//                public void onSubscribe(Disposable d) {
+//
+//                }
+//
+//                @Override
+//                public void onSuccess(Long aLong) {
+//                    mAssetId = aLong.intValue();
+//                }
+//
+//                @Override
+//                public void onError(Throwable e) {
+//
+//                }
+//            });
+//            return repository.getAsset(mAssetId);
+//        }
+//            return repository.getAsset(mAssetId);
+////        return repository.getAsset(mAssetId);
+//    }
+
+    public LiveData<Asset> start(){
+     return repository.getAsset(mAssetId);
+    }
+
+    public LiveData<Asset> startNewAsset(){
+        Asset defaultAsset = new Asset();
+        defaultAsset.setDefaultMyself();
+        setAsset(defaultAsset);
+        return asset;
     }
 
     public void saveAsset(Asset asset){
@@ -60,21 +96,9 @@ public class EditViewModel extends AndroidViewModel {
         mAssetId = assetId;
     }
 
-    private void updateAsset(Asset asset){repository.updateAsset(asset);}
+    public void updateAsset(Asset asset){repository.updateAsset(asset);}
 
-    public MutableLiveData<String> getTitle() {
-        return title;
-    }
+    public MutableLiveData<Asset> getAsset(){ return asset;}
 
-    public void setTitle(String title) {
-        this.title.setValue(title);
-    }
-
-    public MutableLiveData<String> getComment(){
-        return comment;
-    }
-
-    public void setComment(String comment){
-        this.comment.setValue(comment);
-    }
+    public void setAsset(Asset asset){ this.asset.setValue(asset);}
 }

@@ -71,11 +71,11 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private int checkAsset() {
-        if (TextUtils.isEmpty(viewModel.getTitle().getValue())) {
+        if (TextUtils.isEmpty(viewModel.getAsset().getValue().getTitle())) {
             return EMPTY_TITLE;
-        } else if (viewModel.getTitle().getValue().length() > 20) {
+        } else if (viewModel.getAsset().getValue().getTitle().length() > 20) {
             return OVER_CHARACTER;
-        } else if (TextUtils.isEmpty(viewModel.getComment().getValue()) && viewModel.getComment().getValue().length() > 1000) {
+        } else if (TextUtils.isEmpty(viewModel.getAsset().getValue().getComment()) && viewModel.getAsset().getValue().getComment().length() > 1000) {
             return OVER_THOUSAND;
         } else {
             return OK;

@@ -3,19 +3,30 @@ package com.example.android.hiittimer.repository.localdatasource;
 import com.example.android.hiittimer.model.Asset;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import androidx.lifecycle.LiveData;
+
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static io.reactivex.Completable.fromCallable;
 
 public class LocalDataSource {
     private final AssetDAO mAssetDAO;
     private static final String TAG = LocalDataSource.class.getSimpleName();
+    private long ag;
 
 
     public LocalDataSource(AssetDAO assetDAO) {
@@ -41,7 +52,6 @@ public class LocalDataSource {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
