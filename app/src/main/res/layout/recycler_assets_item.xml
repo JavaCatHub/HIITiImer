@@ -20,34 +20,23 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:onClick="@{() -> listener.onClick(asset)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/title_"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:onClick="@{() -> listener.onClick(asset)}"
                 android:text="@{asset.title}"
-                app:layout_constraintBaseline_toBaselineOf="@+id/title_"
-                app:layout_constraintStart_toEndOf="@+id/title_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="title" />
 
             <TextView
@@ -55,10 +44,9 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Time"
+                android:text="@string/time"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_" />
+                app:layout_constraintTop_toBottomOf="@+id/set" />
 
             <TextView
                 android:id="@+id/total_time"
@@ -67,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{asset.getStringTotalTime}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/time_"
-                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@+id/set_count"
                 tools:text="time" />
 
             <TextView
@@ -75,18 +63,20 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Cycle"
+                android:layout_marginTop="8dp"
+                android:text="@string/cycle"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_" />
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
             <TextView
                 android:id="@+id/cycle_count"
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text="@{asset.getStringCycle}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/cycle"
-                app:layout_constraintStart_toStartOf="@+id/total_time"
+                app:layout_constraintStart_toEndOf="@+id/cycle"
                 tools:text="Cycle" />
 
             <TextView
@@ -94,8 +84,7 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Set"
+                android:text="@string/set"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cycle" />
 
@@ -104,6 +93,7 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{asset.getStringSet}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/set"
                 app:layout_constraintStart_toStartOf="@+id/cycle_count"
                 tools:text="Set" />

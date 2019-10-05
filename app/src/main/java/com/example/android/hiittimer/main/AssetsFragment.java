@@ -62,7 +62,7 @@ public class AssetsFragment extends Fragment {
     }
 
     private void initView(List<Asset> list) {
-        LinearLayoutManager manager = new GridLayoutManager(getActivity(),2);
+        LinearLayoutManager manager = new GridLayoutManager(getActivity(),1);
 
         adapter = new AssetsAdapter(mViewModel);
         adapter.setAssetList(list);

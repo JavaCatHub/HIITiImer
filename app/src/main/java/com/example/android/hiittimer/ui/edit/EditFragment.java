@@ -57,11 +57,10 @@ public class EditFragment extends Fragment {
         binding.setViewModel(mViewModel);
     }
 
-
     private void showFragmentDialog(TextView textView) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog, null);
+        View view = inflater.inflate(R.layout.dialog_timer, null);
 
         NumberPicker numSec = view.findViewById(R.id.numberPickerSec);
         initNumberPicker(numSec);
@@ -86,6 +85,29 @@ public class EditFragment extends Fragment {
         alertDialog.show();
     }
 
+    private void showPickerDialog(TextView textView){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_count,null);
+
+        NumberPicker count = view.findViewById(R.id.numberPickerCount);
+        count.setMinValue(1);
+        count.setMaxValue(60);
+
+        builder.setTitle(R.string.pick_a_count)
+                .setView(view)
+                .setPositiveButton(R.string.ok,(dialog, which) -> {
+                    int x = count.getValue();
+                    if(x != 0){
+                        textView.setText(String.valueOf(x));
+                    } else{
+                        Toast.makeText(getActivity(),"Please enter at least one or more times.",Toast.LENGTH_SHORT).show();
+                        Timber.d("error value");
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
     private void initViews() {
         if (getArguments() != null) {
             if (getArguments().getBoolean(ARG_EDIT_KEY)) {
@@ -112,7 +134,10 @@ public class EditFragment extends Fragment {
         binding.include.workOutTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
         binding.include.intervalTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
         binding.include.coolDownTime.setOnClickListener(v -> showFragmentDialog((TextView) v));
+        binding.include.setCount.setOnClickListener(v -> showPickerDialog((TextView) v));
+        binding.include.cycleCount.setOnClickListener(v -> showPickerDialog((TextView) v));
     }
+
 
     private void initNumberPicker(NumberPicker numberPicker) {
         numberPicker.setMaxValue(59);
