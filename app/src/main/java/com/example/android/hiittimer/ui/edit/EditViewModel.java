@@ -36,34 +36,6 @@ public class EditViewModel extends AndroidViewModel {
         this.mIsNewAsset = mIsNewAsset;
     }
 
-//    public LiveData<Asset> start() {
-//        if (mIsNewAsset){
-//            Asset defaultAsset = new Asset();
-//            defaultAsset.setDefaultMyself();
-//            setAsset(defaultAsset);
-//            repository.insertAndEditAsset(defaultAsset)
-//            .subscribe(new SingleObserver<Long>() {
-//                @Override
-//                public void onSubscribe(Disposable d) {
-//
-//                }
-//
-//                @Override
-//                public void onSuccess(Long aLong) {
-//                    mAssetId = aLong.intValue();
-//                }
-//
-//                @Override
-//                public void onError(Throwable e) {
-//
-//                }
-//            });
-//            return repository.getAsset(mAssetId);
-//        }
-//            return repository.getAsset(mAssetId);
-////        return repository.getAsset(mAssetId);
-//    }
-
     public LiveData<Asset> start(){
      return repository.getAsset(mAssetId);
     }
