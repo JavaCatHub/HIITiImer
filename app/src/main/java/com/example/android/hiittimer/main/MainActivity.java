@@ -36,9 +36,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
-// TODO DetailActivityでmenuのお気に入りかどうかはバックするときに確認する
-// TODO 3 databaseの中身を表示するwidgetを作成
-// TODO 5 新しくmenuを作成したらそれをデフォルトに設定する
+// TODO 2 widgetのプラスを押したら新しいアセットを作成editする画面に飛ぶ
+// TODO 3 詳細と編集画面にMainActivityに戻れるボタンを作成する
+
 
 public class MainActivity extends AppCompatActivity {
     public static final String ASSET_KEY = "getAssetById";

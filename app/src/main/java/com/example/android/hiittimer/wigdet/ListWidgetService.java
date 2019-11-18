@@ -6,6 +6,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.hiittimer.R;
+import com.example.android.hiittimer.main.MainActivity;
 import com.example.android.hiittimer.model.Asset;
 import com.example.android.hiittimer.repository.localdatasource.AppDatabase;
 
@@ -61,6 +62,10 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_item);
         views.setTextViewText(R.id.title, asset.getTitle());
         views.setTextViewText(R.id.total_time, asset.getStringTotalTime());
+
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtra(MainActivity.ASSET_KEY,asset.getId());
+        views.setOnClickFillInIntent(R.id.widget_list_item,fillInIntent);
 
         return views;
     }

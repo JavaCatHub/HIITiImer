@@ -1,5 +1,6 @@
 package com.example.android.hiittimer.wigdet;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.example.android.hiittimer.R;
+import com.example.android.hiittimer.detail.DetailActivity;
 
 import timber.log.Timber;
 
@@ -26,6 +28,13 @@ public class HIITWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, ListWidgetService.class);
         intent.setData(Uri.fromParts("content", intent.toUri(Intent.URI_INTENT_SCHEME), null));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+
+        // when click a listView's item, launch detail activity.
+        Intent startDetailActivityIntent = new Intent(context,DetailActivity.class);
+        PendingIntent startDetailActivityPendingIntent = PendingIntent.getActivity(context, 0 , startDetailActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_list_view,startDetailActivityPendingIntent);
+
+        //
 
         views.setRemoteAdapter(R.id.widget_list_view, intent);
         appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.widget_list_view);
