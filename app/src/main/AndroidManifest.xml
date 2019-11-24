@@ -36,7 +36,9 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/adMobKey" />
 
-        <activity android:name=".main.MainActivity">
+        <activity
+            android:name=".main.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

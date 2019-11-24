@@ -36,7 +36,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
-// TODO 2 widgetのプラスを押したら新しいアセットを作成editする画面に飛ぶ
+// TODO 2 Widgetでアプリに飛んだ時に新しいアセットを追加した時そのままアプリを落とさずにMainActivityに戻るようにする
 // TODO 3 詳細と編集画面にMainActivityに戻れるボタンを作成する
 
 

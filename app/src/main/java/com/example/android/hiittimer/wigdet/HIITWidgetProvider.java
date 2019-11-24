@@ -11,6 +11,8 @@ import android.widget.RemoteViews;
 
 import com.example.android.hiittimer.R;
 import com.example.android.hiittimer.detail.DetailActivity;
+import com.example.android.hiittimer.ui.edit.EditActivity;
+import com.example.android.hiittimer.ui.edit.EditFragment;
 
 import timber.log.Timber;
 
@@ -34,7 +36,12 @@ public class HIITWidgetProvider extends AppWidgetProvider {
         PendingIntent startDetailActivityPendingIntent = PendingIntent.getActivity(context, 0 , startDetailActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.widget_list_view,startDetailActivityPendingIntent);
 
-        //
+        // when click a add button, launch edit activity with a new asset.
+        Intent addAssetIntent = new Intent(context, EditActivity.class);
+        addAssetIntent.putExtra(EditFragment.ARG_EDIT_KEY, true);
+        addAssetIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent addAssetPendingIntent = PendingIntent.getActivity(context,0,addAssetIntent,0);
+        views.setOnClickPendingIntent(R.id.add_asset_widget,addAssetPendingIntent);
 
         views.setRemoteAdapter(R.id.widget_list_view, intent);
         appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.widget_list_view);

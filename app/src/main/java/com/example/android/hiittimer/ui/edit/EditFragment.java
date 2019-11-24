@@ -168,9 +168,7 @@ public class EditFragment extends Fragment {
             } else {
                 mViewModel.setIsNewAsset(false);
                 mViewModel.setAssetId(getArguments().getInt(ARG_EDIT_ASSET_ID, 0));
-                mViewModel.start().observe(this,asset -> {
-                    mViewModel.setAsset(asset);
-                });
+                mViewModel.start().observe(this,asset -> mViewModel.setAsset(asset));
                 mViewModel.getAsset().observe(this,asset -> {
                     asset.calculateTotalTime();
                     binding.setAsset(asset);
