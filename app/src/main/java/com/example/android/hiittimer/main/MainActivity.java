@@ -34,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+
 import timber.log.Timber;
 
 // TODO 2 Widgetでアプリに飛んだ時に新しいアセットを追加した時そのままアプリを落とさずにMainActivityに戻るようにする
@@ -42,7 +43,9 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
     public static final String ASSET_KEY = "getAssetById";
+    public static final String LAUNCH_DETAIL = "launch_detail";
     private static final int RC_SIGN_IN = 1;
+
 
     private ActivityMainBinding binding;
     private AdView mAdView;
@@ -58,8 +61,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Timber.i("onCreate");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+//        if (getIntent().getBooleanExtra(MainActivity.LAUNCH_DETAIL, false)) {
+//            Intent intent = new Intent(this, DetailActivity.class);
+//            int id = getIntent().getIntExtra(ASSET_KEY, 0);
+//            intent.putExtra(ASSET_KEY, id);
+//            startActivity(intent);
+//        }
+
         initializeAdView();
         initializeToolbar();
         initializeViewPager();
@@ -106,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         Timber.i("onStart");
         account = GoogleSignIn.getLastSignedInAccount(this);
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
