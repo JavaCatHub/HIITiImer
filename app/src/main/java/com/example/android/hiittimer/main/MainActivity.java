@@ -43,9 +43,7 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
     public static final String ASSET_KEY = "getAssetById";
-    public static final String LAUNCH_DETAIL = "launch_detail";
     private static final int RC_SIGN_IN = 1;
-
 
     private ActivityMainBinding binding;
     private AdView mAdView;
